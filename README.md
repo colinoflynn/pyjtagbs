@@ -48,6 +48,12 @@ stm32.set_pin_state(["PC15", "PC14"], [None, None])
 
 That library was developed by Viveris (credit to Jean-François DEL NERO & Sébastien Corbeau).
 
+**WARNING: The .dll in the repo is only a 32-bit build, so this only works with 32-bit Python on Windows**
+
+### Using J-Link
+
+The device can use a J-Link, it needs Segger's DLL as well for that.
+
 ## Other Tools worth Mentioning
 
 * urJTAG
