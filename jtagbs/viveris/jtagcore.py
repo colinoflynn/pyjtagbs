@@ -62,7 +62,7 @@ class JTAGCore(object):
             dirname = os.path.dirname(__file__)
             
             if sys.maxsize > 2**32:
-                raise NotImplementedError("64-bit library not built yet - sorry about that")
+                raise NotImplementedError("64-bit build doesn't work yet")
                 liblocation = os.path.join(dirname, 'libjtagcore_x64.dll')                
             else:
                 liblocation = os.path.join(dirname, 'libjtagcore_x86.dll')
@@ -98,7 +98,8 @@ class JTAGCore(object):
 
     def deinit(self):
         """Close connection - on some devices code will hang if you don't call this"""
-        self.lib.jtagcore_deinit(self._jtag)
+        if hasattr(self, 'lib') and hasattr(self, '_jtag'):
+            self.lib.jtagcore_deinit(self._jtag)
 
     def get_probe_names(self):
         """Get the name of returned probes"""
