@@ -2,6 +2,7 @@ from . import jlookup
 import os
 
 class JTAGBS(object):
+    """JTAG Boundry Scan (JTAGBS) Top-Level Module - simply JTAG access to pins and stuff"""
 
     def __init__(self, interface):
         self.interface = interface

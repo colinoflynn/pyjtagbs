@@ -50,15 +50,25 @@ That library was developed by Viveris (credit to Jean-François DEL NERO & Séba
 
 **WARNING: The .dll in the repo is only a 32-bit build, so this only works with 32-bit Python on Windows**
 
+In theory this will support other stuff, but that library is so good why would you?
+
 ### Using J-Link
 
-The device can use a J-Link, it needs Segger's DLL as well for that.
+The device can use a J-Link, it needs Segger's DLL as well for that. For some reason the J-Link DLL needs to be at the same location as your file that is running and not the library itself (to be fixed).
 
 ## Other Tools worth Mentioning
 
-* urJTAG
-* TopJTAG
+* urJTAG - open source JTAG tooling, the original!
+* TopJTAG - low-cost ($100) with GUI that shows each pin on the package itself - very handy for debug.
 
 ## GUI
 
-## BDSL Sources
+For a GUI, see the https://github.com/viveris/jtag-boundary-scanner which offers a nice GUI interface to view each pin state.
+
+## BSDL Sources
+
+BSDL files are found around the web. For ST devices, see the "CAD Resources" tab, i.e.: https://www.st.com/en/microcontrollers-microprocessors/stm32f405og.html#cad-resources
+
+## JTAG Notes
+
+Some devices have JTAG that is shared between debug & boundry scan by a physical pin (for example - Microchip SAM3U). For these devices your board is likely configured only for debug access, you may need to cahgne a pin strap or similar.
