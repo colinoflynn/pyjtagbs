@@ -59,7 +59,13 @@ class JTAGCore(object):
             from ctypes.util import find_library
             import os
             dirname = os.path.dirname(__file__)
-            liblocation = os.path.join(dirname, 'libjtagcore.dll')
+            
+            if sys.maxsize > 2**32:
+                raise NotImplementedError("64-bit library not built yet - sorry about that")
+                liblocation = os.path.join(dirname, 'libjtagcore_x64.dll')                
+            else:
+                liblocation = os.path.join(dirname, 'libjtagcore_x86.dll')
+
             self.lib = windll.LoadLibrary(               
                 find_library(liblocation)
             )
