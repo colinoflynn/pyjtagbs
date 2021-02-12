@@ -2,7 +2,7 @@
 
 *If you've tried to get boundary scan working under Python, you'll truely appreciate the name pyjtagbs.*
 
-This is a think wrapper on a very nice library, but gives you simple Python access.
+This is a thin wrapper on a very nice library currenting, giving you simple Python access to JTAG boundry scan pins.
 
 ```
 from jtagbs import jtagbs
@@ -42,7 +42,7 @@ stm32.set_pin_state(["PC15", "PC14"], [None, None])
 
 ```
 
-## Library Dependancy
+## 'JTAG Boundary Scanner' Tool & Library
 
 100% of the actual work is done by the amazing JTAG Boundary Scanner tool available at https://github.com/viveris/jtag-boundary-scanner.
 
@@ -50,11 +50,15 @@ That library was developed by Viveris (credit to Jean-François DEL NERO & Séba
 
 **WARNING: The .dll in the repo is only a 32-bit build, so this only works with 32-bit Python on Windows**
 
-In theory this will support other stuff, but that library is so good why would you?
+This library supports FTDI cables along with Segger J-Link tools.
 
 ### Using J-Link
 
-The device can use a J-Link, it needs Segger's DLL as well for that. For some reason the J-Link DLL needs to be at the same location as your file that is running and not the library itself (to be fixed).
+The device can use a J-Link, it needs Segger's DLL as well for that. For some reason the J-Link DLL needs to be at the same location as your file that is running from (to be fixed), so to run 'example.py' you need the DLL in that folder as well (or install the DLL to your Windows system path - which may be dangerous as other tools will find that version).
+
+## More JTAG Features
+
+Future work may support other backends - some of the features (such as BSDL parsing) required are available in Python implementations already. However having SPI & I2C access is nice with the speed of the compiled C library.
 
 ## Other Tools worth Mentioning
 
