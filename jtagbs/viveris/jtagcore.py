@@ -20,6 +20,7 @@ import ctypes
 from ctypes import create_string_buffer, CFUNCTYPE, POINTER, c_char, c_voidp, c_char_p, c_int, byref
 import platform
 import os, os.path
+import sys
 import time
 
 class JTAGCore(object):
