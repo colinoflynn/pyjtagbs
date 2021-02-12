@@ -5,11 +5,10 @@
 This is a thin wrapper on a very nice library currenting, giving you simple Python access to JTAG boundry scan pins.
 
 ```
-from jtagbs import jtagbs
-from jtagbs.viveris import jtagcore
+from jtagbs import JTAGCore, JTAGBS
 
-interface = jtagcore.JTAGCore()
-jtag = jtagbs.JTAGBS(interface)
+interface = JTAGCore()
+jtag = JTAGBS(interface)
 
 probes = jtag.list_available_probes()
 print(probes)
