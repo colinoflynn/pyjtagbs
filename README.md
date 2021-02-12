@@ -25,13 +25,19 @@ device.list_pins()
 
 device.set_scan_mode("passive")
 
-device.get_bpin_state("PA11")
+device.get_pin_state("PA11")
 
 device.get_pin_state(["PA11", "PA12"])
 
-devie.set_scan_mode("active")
+device.set_scan_mode("active")
 
-device.
+device.set_pin_state("PA12", True)
+
+device.set_pin_state(["PA11, "PA12"], [True, False])
+
+spi = device.spi(clk="PA11", copi="PA12", cipo="PA13", cs="PA14")
+
+```
 
 ## Library Dependancy
 
