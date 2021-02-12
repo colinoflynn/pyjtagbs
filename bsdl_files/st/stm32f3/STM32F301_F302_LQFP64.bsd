@@ -1,0 +1,403 @@
+-- ****************** (C) COPYRIGHT 2015 STMicroelectronics **************************
+-- * File Name          : STM32F301_F302_LQFP64.bsd                                  *
+-- * Author             : STMicroelectronics www.st.com                              *
+-- * Version            : V1.0                                                       *
+-- * Date               : 13-August-2015                                             *
+-- * Description        : Boundary Scan Description Language (BSDL) file for the     *
+-- *                      STM32F301_F302_LQFP64 Microcontrollers.                    *
+-- ***********************************************************************************
+-- * THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS     *
+-- * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.*
+-- * AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,        *
+-- * INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE   *
+-- * CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING         *
+-- * INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.                 *
+-- ***********************************************************************************
+-- * This BSDL file has been syntaxed checked and validated by:                      *
+-- * GOEPEL SyntaxChecker Version 3.1.2                                              *
+-- ***********************************************************************************
+ 
+ 
+ entity STM32F301_F302_LQFP64 is					
+ -- This section identifies the default device package selected.
+ generic (PHYSICAL_PIN_MAP: string:= "LQFP64_PACKAGE");
+ -- This section declares all the ports in the design.	 
+   port ( 
+      BOOT0		: in bit;
+      JTDI		: in bit;				  
+      JTMS		: in bit;				  
+      JTCK		: in bit;				  
+      JTRST		: in bit;				  
+      JTDO		: out bit;				  
+      NRST		: in bit;   -- modification to add COMPLIANCE_PATTERNS 
+      PA0		: inout bit;
+      PA1		: inout bit;
+      PA2		: inout bit;
+      PA3		: inout bit;
+      PA4		: inout bit;
+      PA5		: inout bit;
+      PA6		: inout bit;
+      PA7		: inout bit;
+      PA8		: inout bit;
+      PA9		: inout bit;
+      PA10		: inout bit;
+      PA11		: inout bit;
+      PA12		: inout bit;
+      PB0		: inout bit;
+      PB1		: inout bit;
+      PB2		: inout bit;
+      PB5		: inout bit;
+      PB6		: inout bit;
+      PB7		: inout bit;
+      PB8		: inout bit;
+      PB9		: inout bit;
+      PB10		: inout bit;
+      PB11		: inout bit;
+      PB12		: inout bit;
+      PB13		: inout bit;
+      PB14		: inout bit;
+      PB15		: inout bit;
+      PC0		: inout bit;
+      PC1		: inout bit;
+      PC2		: inout bit;
+      PC3		: inout bit;
+      PC4		: inout bit;
+      PC5		: inout bit;
+      PC6		: inout bit;
+      PC7		: inout bit;
+      PC8		: inout bit;
+      PC9		: inout bit;
+      PC10		: inout bit;
+      PC11		: inout bit;
+      PC12		: inout bit;
+      PC13		: inout bit;
+      PC14_OSC32IN	: inout bit;
+      PC15_OSC32OUT	: inout bit;
+      PD2		: inout bit;
+      PF0_OSCIN	: inout bit;
+      PF1_OSCOUT	: inout bit;
+      VBAT		: linkage bit;
+      VSSA		: linkage bit;
+      VREFM		: linkage bit;
+      VREFP		: linkage bit;
+      VDDA		: linkage bit;
+      VSS1		: linkage bit;
+      VDD1		: linkage bit;
+      VSS2		: linkage bit;
+      VDD2		: linkage bit;
+      VSS3		: linkage bit;
+      VDD3		: linkage bit;
+      VSS4		: linkage bit;
+      VDD4		: linkage bit
+    );
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+    use STD_1149_1_2001.all;
+
+    attribute COMPONENT_CONFORMANCE of STM32F301_F302_LQFP64: entity is "STD_1149_1_2001";
+
+    attribute PIN_MAP of STM32F301_F302_LQFP64 : entity is PHYSICAL_PIN_MAP;
+
+-- This section specifies the pin map for each port. This information is extracted from the
+-- port-to-pin map file that was read in using the "read_pin_map" command.
+
+    constant LQFP64_PACKAGE: PIN_MAP_STRING :=   
+    
+      "BOOT0      : 60  ," & 
+      "JTDI       : 50  ," & 
+      "JTMS       : 46  ," & 
+      "JTCK       : 49  ," & 
+      "NRST       : 7  ," & 
+      "JTDO       : 55  ," & 
+      "JTRST      : 56  ," & 
+      "PA0        : 14  ," & 
+      "PA1        : 15  ," & 
+      "PA2        : 16  ," & 
+      "PA3        : 17  ," & 
+      "PA4        : 20  ," & 
+      "PA5        : 21  ," & 
+      "PA6        : 22  ," & 
+      "PA7        : 23  ," & 
+      "PA8        : 41  ," & 
+      "PA9        : 42  ," & 
+      "PA10       : 43  ," & 
+      "PA11       : 44  ," & 
+      "PA12       : 45  ," & 
+      "PB0        : 26  ," & 
+      "PB1        : 27  ," & 
+      "PB2        : 28  ," & 
+      "PB5        : 57  ," & 
+      "PB6        : 58  ," & 
+      "PB7        : 59  ," & 
+      "PB8        : 61  ," &  
+      "PB9        : 62  ," & 
+      "PB10       : 29  ," & 
+      "PB11       : 30  ," & 
+      "PB12       : 33  ," & 
+      "PB13       : 34  ," & 
+      "PB14       : 35  ," & 
+      "PB15       : 36  ," & 
+      "PC0        : 8  ," & 
+      "PC1        : 9  ," & 
+      "PC2        : 10  ," & 
+      "PC3        : 11  ," & 
+      "PC4        : 24  ," & 
+      "PC5        : 25  ," & 
+      "PC6        : 37  ," & 
+      "PC7        : 38  ," & 
+      "PC8        : 39  ," & 
+      "PC9        : 40  ," & 
+      "PC10       : 51  ," & 
+      "PC11       : 52  ," & 
+      "PC12       : 53  ," & 
+      "PC13       : 2  ," & 
+      "PC14_OSC32IN    : 3  ," & 
+      "PC15_OSC32OUT   : 4  ," & 
+      "PD2        : 54  ," & 
+      "PF0_OSCIN  : 5  ," & 
+      "PF1_OSCOUT : 6  ," & 
+      "VBAT       : 1  ," & 
+      "VSSA       : 12  ," & 
+      "VDDA       : 13  ," & 
+      "VSS1       : 63  ," & 
+      "VDD1       : 64 ," &
+      "VSS2       : 31  ," & 
+      "VDD2       : 32  ," & 
+      "VSS3       : 47  ," & 
+      "VDD3       : 48  ," &
+      "VSS4       : 18  ," & 
+      "VDD4       : 19  ";
+
+
+-- This section specifies the TAP ports. For the TAP TCK port, the parameters in the brackets are:
+--        First Field : Maximum  TCK frequency.
+--        Second Field: Allowable states TCK may be stopped in.
+   
+   attribute TAP_SCAN_CLOCK of JTCK  : signal is (10.0e6, BOTH);
+   attribute TAP_SCAN_IN    of JTDI  : signal is true;
+   attribute TAP_SCAN_MODE  of JTMS  : signal is true;
+   attribute TAP_SCAN_OUT   of JTDO  : signal is true;
+   attribute TAP_SCAN_RESET of JTRST : signal is true;
+   
+-- Specifies the compliance enable patterns for the design. It lists a set of 
+-- design ports and the values that they should be set to, in order to enable 
+-- compliance to IEEE Std 1149.1
+
+   
+   attribute COMPLIANCE_PATTERNS of STM32F301_F302_LQFP64: entity is 
+        "(NRST) (0)";
+
+   
+-- Specifies the number of bits in the instruction register.
+
+   attribute INSTRUCTION_LENGTH of STM32F301_F302_LQFP64: entity is 5;
+
+-- Specifies the boundary-scan instructions implemented in the design and their opcodes.
+   
+   attribute INSTRUCTION_OPCODE of STM32F301_F302_LQFP64: entity is 
+     "BYPASS  (11111)," &
+     "EXTEST  (00000)," &
+     "SAMPLE  (00010)," &
+     "PRELOAD (00010)," &
+     "IDCODE  (00001)";
+   
+-- Specifies the bit pattern that is loaded into the instruction register when the TAP controller 
+-- passes through the Capture-IR state. The standard mandates that the two LSBs must be "01". The 
+-- remaining bits are design specific.
+   
+   attribute INSTRUCTION_CAPTURE of STM32F301_F302_LQFP64: entity is "XXX01";
+
+-- Specifies the bit pattern that is loaded into the DEVICE_ID register during the IDCODE 
+-- instruction when the TAP controller passes through the Capture-DR state.
+   
+   attribute IDCODE_REGISTER of STM32F301_F302_LQFP64: entity is 
+     "XXXX" &              -- 4-bit version number
+    "0110010000111001" &  -- 16-bit part number
+     "00000100000" &       -- 11-bit identity of the manufacturer
+     "1";                  -- Required by IEEE Std 1149.1
+
+ -- This section specifies the test data register placed between TDI and TDO for each implemented 
+-- instruction.
+   
+  attribute REGISTER_ACCESS of STM32F301_F302_LQFP64: entity is 
+       "BYPASS    (BYPASS)," &
+       "BOUNDARY  (EXTEST, SAMPLE, PRELOAD)," &
+       "DEVICE_ID (IDCODE)";
+
+-- Specifies the length of the boundary scan register.
+   
+   attribute BOUNDARY_LENGTH of STM32F301_F302_LQFP64: entity is 139;
+ 
+-- The following list specifies the characteristics of each cell in the boundary scan register from 
+-- TDI to TDO. The following is a description of the label fields:
+--      num     : Is the cell number.
+--      cell    : Is the cell type as defined by the standard.
+--      port    : Is the design port name. Control cells do not have a port name.
+--      function: Is the function of the cell as defined by the standard. Is one of input, output2, 
+--                output3, bidir, control or controlr.
+--      safe    : Specifies the value that the BSR cell should be loaded with for safe operation 
+--                when the software might otherwise choose a random value.
+--      ccell   : The control cell number. Specifies the control cell that drives the output enable 
+--                for this port.
+--      disval  : Specifies the value that is loaded into the control cell to disable the output 
+--                enable for the corresponding port.
+--      rslt    : Resulting state. Shows the state of the driver when it is disabled.
+   
+   attribute BOUNDARY_REGISTER of STM32F301_F302_LQFP64: entity is 
+--     
+--    num	cell	port		function	safe  [ccell  disval  rslt]
+--     
+--------------------------------------------------------------------------------	
+
+      "138	(BC_1,	*,		CONTROL,	1)				," &
+      "137	(BC_1,	PC13,		OUTPUT3,	X,	138,	1,	Z)	," &
+      "136	(BC_4,	PC13,		INPUT,  	X)				," &
+      "135	(BC_1,	*,		CONTROL,	1)				," &
+      "134	(BC_1,	PC14_OSC32IN,	OUTPUT3,	X,	135,	1,	Z)	," &
+      "133	(BC_4,	PC14_OSC32IN,	INPUT,  	X)				," &
+      "132	(BC_1,	*,		CONTROL,	1)				," &
+      "131	(BC_1,	PC15_OSC32OUT,	OUTPUT3,	X,	132,	1,	Z)	," &
+      "130	(BC_4,	PC15_OSC32OUT,	INPUT,  	X)				," &
+      "129	(BC_1,	*,		CONTROL,	1)				," &
+      "128	(BC_1,	PF0_OSCIN,		OUTPUT3,	X,	129,	1,	Z)	," &
+      "127	(BC_4,	PF0_OSCIN,		INPUT,  	X)				," &
+      "126	(BC_1,	*,		CONTROL,	1)				," &
+      "125	(BC_1,	PF1_OSCOUT,		OUTPUT3,	X,	126,	1,	Z)	," &
+      "124	(BC_4,	PF1_OSCOUT,		INPUT,  	X)				," &
+      "123	(BC_1,	*,		CONTROL,	1)				," &
+      "122	(BC_1,	PC0,		OUTPUT3,	X,	123,	1,	Z)	," &
+      "121	(BC_4,	PC0,		INPUT,  	X)				," &
+      "120	(BC_1,	*,		CONTROL,	1)				," &
+      "119	(BC_1,	PC1,		OUTPUT3,	X,	120,	1,	Z)	," &
+      "118	(BC_4,	PC1,		INPUT,  	X)				," &
+      "117	(BC_1,	*,		CONTROL,	1)				," &
+      "116	(BC_1,	PC2,		OUTPUT3,	X,	117,	1,	Z)	," &
+      "115	(BC_4,	PC2,		INPUT,  	X)				," &
+      "114	(BC_1,	*,		CONTROL,	1)				," &
+      "113	(BC_1,	PC3,		OUTPUT3,	X,	114,	1,	Z)	," &
+      "112	(BC_4,	PC3,		INPUT,  	X)				," &
+      "111	(BC_1,	*,		CONTROL,	1)				," &
+      "110	(BC_1,	PA0,		OUTPUT3,	X,	111,	1,	Z)	," &
+      "109	(BC_4,	PA0,		INPUT,  	X)				," &
+      "108	(BC_1,	*,		CONTROL,	1)				," &
+      "107	(BC_1,	PA1,		OUTPUT3,	X,	108,	1,	Z)	," &
+      "106	(BC_4,	PA1,		INPUT,  	X)				," &
+      "105	(BC_1,	*,		CONTROL,	1)				," &
+      "104	(BC_1,	PA2,		OUTPUT3,	X,	105,	1,	Z)	," &
+      "103	(BC_4,	PA2,		INPUT,  	X)				," &
+      "102	(BC_1,	*,		CONTROL,	1)				," &
+      "101	(BC_1,	PA3,		OUTPUT3,	X,	102,	1,	Z)	," &
+      "100	(BC_4,	PA3,		INPUT,  	X)				," &
+      "99	(BC_1,	*,		CONTROL,	1)				," &
+      "98	(BC_1,	PA4,		OUTPUT3,	X,	99,	1,	Z)	," &
+      "97	(BC_4,	PA4,		INPUT,  	X)				," &
+      "96	(BC_1,	*,		CONTROL,	1)				," &
+      "95	(BC_1,	PA5,		OUTPUT3,	X,	96,	1,	Z)	," &
+      "94	(BC_4,	PA5,		INPUT,  	X)				," &
+      "93	(BC_1,	*,		CONTROL,	1)				," &
+      "92	(BC_1,	PA6,		OUTPUT3,	X,	93,	1,	Z)	," &
+      "91	(BC_4,	PA6,		INPUT,  	X)				," &
+      "90	(BC_1,	*,		CONTROL,	1)				," &
+      "89	(BC_1,	PA7,		OUTPUT3,	X,	90,	1,	Z)	," &
+      "88	(BC_4,	PA7,		INPUT,  	X)				," &
+      "87	(BC_1,	*,		CONTROL,	1)				," &
+      "86	(BC_1,	PC4,		OUTPUT3,	X,	87,	1,	Z)	," &
+      "85	(BC_4,	PC4,		INPUT,  	X)				," &
+      "84	(BC_1,	*,		CONTROL,	1)				," &
+      "83	(BC_1,	PC5,		OUTPUT3,	X,	84,	1,	Z)	," &
+      "82	(BC_4,	PC5,		INPUT,  	X)				," &
+      "81	(BC_1,	*,		CONTROL,	1)				," &
+      "80	(BC_1,	PB0,		OUTPUT3,	X,	81,	1,	Z)	," &
+      "79	(BC_4,	PB0,		INPUT,  	X)				," &
+      "78	(BC_1,	*,		CONTROL,	1)				," &
+      "77	(BC_1,	PB1,		OUTPUT3,	X,	78,	1,	Z)	," &
+      "76	(BC_4,	PB1,		INPUT,  	X)				," &
+      "75	(BC_1,	*,		CONTROL,	1)				," &
+      "74	(BC_1,	PB2,		OUTPUT3,	X,	75,	1,	Z)	," &
+      "73	(BC_4,	PB2,		INPUT,  	X)				," &
+      "72	(BC_1,	*,		CONTROL,	1)				," &
+      "71	(BC_1,	PB10,		OUTPUT3,	X,	72,	1,	Z)	," &
+      "70	(BC_4,	PB10,		INPUT,  	X)				," &
+      "69	(BC_1,	*,		CONTROL,	1)				," &
+      "68	(BC_1,	PB11,		OUTPUT3,	X,	69,	1,	Z)	," &
+      "67	(BC_4,	PB11,		INPUT,  	X)				," &
+      "66	(BC_1,	*,		CONTROL,	1)				," &
+      "65	(BC_1,	PB12,		OUTPUT3,	X,	66,	1,	Z)	," &
+      "64	(BC_4,	PB12,		INPUT,  	X)				," &
+      "63	(BC_1,	*,		CONTROL,	1)				," &
+      "62	(BC_1,	PB13,		OUTPUT3,	X,	63,	1,	Z)	," &
+      "61	(BC_4,	PB13,		INPUT,  	X)				," &
+      "60	(BC_1,	*,		CONTROL,	1)				," &
+      "59	(BC_1,	PB14,		OUTPUT3,	X,	60,	1,	Z)	," &
+      "58	(BC_4,	PB14,		INPUT,  	X)				," &
+      "57	(BC_1,	*,		CONTROL,	1)				," &
+      "56	(BC_1,	PB15,		OUTPUT3,	X,	57,	1,	Z)	," &
+      "55	(BC_4,	PB15,		INPUT,  	X)				," &
+      "54	(BC_1,	*,		CONTROL,	1)				," &
+      "53	(BC_1,	PC6,		OUTPUT3,	X,	54,	1,	Z)	," &
+      "52	(BC_4,	PC6,		INPUT,  	X)				," &
+      "51	(BC_1,	*,		CONTROL,	1)				," &
+      "50	(BC_1,	PC7,		OUTPUT3,	X,	51,	1,	Z)	," &
+      "49	(BC_4,	PC7,		INPUT,  	X)				," &
+      "48	(BC_1,	*,		CONTROL,	1)				," &
+      "47	(BC_1,	PC8,		OUTPUT3,	X,	48,	1,	Z)	," &
+      "46	(BC_4,	PC8,		INPUT,  	X)				," &
+      "45	(BC_1,	*,		CONTROL,	1)				," &
+      "44	(BC_1,	PC9,		OUTPUT3,	X,	45,	1,	Z)	," &
+      "43	(BC_4,	PC9,		INPUT,  	X)				," &
+      "42	(BC_1,	*,		CONTROL,	1)				," &
+      "41	(BC_1,	PA8,		OUTPUT3,	X,	42,	1,	Z)	," &
+      "40	(BC_4,	PA8,		INPUT,  	X)				," &
+      "39	(BC_1,	*,		CONTROL,	1)				," &
+      "38	(BC_1,	PA9,		OUTPUT3,	X,	39,	1,	Z)	," &
+      "37	(BC_4,	PA9,		INPUT,  	X)				," &
+      "36	(BC_1,	*,		CONTROL,	1)				," &
+      "35	(BC_1,	PA10,		OUTPUT3,	X,	36,	1,	Z)	," &
+      "34	(BC_4,	PA10,		INPUT,  	X)				," &
+      "33	(BC_1,	*,		CONTROL,	1)				," &
+      "32	(BC_1,	PA11,		OUTPUT3,	X,	33,	1,	Z)	," &
+      "31	(BC_4,	PA11,		INPUT,  	X)				," &
+      "30	(BC_1,	*,		CONTROL,	1)				," &
+      "29	(BC_1,	PA12,		OUTPUT3,	X,	30,	1,	Z)	," &
+      "28	(BC_4,	PA12,		INPUT,  	X)				," &
+      "27	(BC_1,	*,		CONTROL,	1)				," &
+      "26	(BC_1,	PC10,		OUTPUT3,	X,	27,	1,	Z)	," &
+      "25	(BC_4,	PC10,		INPUT,  	X)				," &
+      "24	(BC_1,	*,		CONTROL,	1)				," &
+      "23	(BC_1,	PC11,		OUTPUT3,	X,	24,	1,	Z)	," &
+      "22	(BC_4,	PC11,		INPUT,  	X)				," &
+      "21	(BC_1,	*,		CONTROL,	1)				," &
+      "20	(BC_1,	PC12,		OUTPUT3,	X,	21,	1,	Z)	," &
+      "19	(BC_4,	PC12,		INPUT,  	X)				," &
+      "18	(BC_1,	*,		CONTROL,	1)				," &
+      "17	(BC_1,	PD2,		OUTPUT3,	X,	18,	1,	Z)	," &
+      "16	(BC_4,	PD2,		INPUT,  	X)				," &
+      "15	(BC_1,	*,		CONTROL,	1)				," &
+      "14	(BC_1,	PB5,		OUTPUT3,	X,	15,	1,	Z)	," &
+      "13	(BC_4,	PB5,		INPUT,  	X)				," &
+      "12	(BC_1,	*,		CONTROL,	1)				," &
+      "11	(BC_1,	PB6,		OUTPUT3,	X,	12,	1,	Z)	," &
+      "10	(BC_4,	PB6,		INPUT,  	X)				," &
+      "9	(BC_1,	*,		CONTROL,	1)				," &
+      "8	(BC_1,	PB7,		OUTPUT3,	X,	9,	1,	Z)	," &
+      "7	(BC_4,	PB7,		INPUT,  	X)				," &
+      "6	(BC_4,	BOOT0,		INPUT,  	X)				," &
+      "5	(BC_1,	*,		CONTROL,	1)				," &
+      "4	(BC_1,	PB8,		OUTPUT3,	X,	5,	1,	Z)	," &
+      "3	(BC_4,	PB8,		INPUT,  	X)				," &
+      "2	(BC_1,	*,		CONTROL,	1)				," &
+      "1	(BC_1,	PB9,		OUTPUT3,	X,	2,	1,	Z)	," &
+      "0	(BC_4,	PB9,		INPUT,  	X)				 " ;
+        									      
+    attribute DESIGN_WARNING of STM32F301_F302_LQFP64: entity is 				      
+      "Device configuration can effect boundary scan behavior. " &		      
+      "Keep the NRST pin low to ensure default boundary scan operation " &	      
+      "as described in this file." ;
+
+					      
+end STM32F301_F302_LQFP64;
+
+									      
+-- ******************* (C) COPYRIGHT 2015 STMicroelectronics *****END OF FILE********
+

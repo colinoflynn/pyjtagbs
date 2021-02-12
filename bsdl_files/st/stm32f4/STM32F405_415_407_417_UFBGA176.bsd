@@ -1,0 +1,839 @@
+-- ****************** (C) COPYRIGHT 2014 STMicroelectronics **************************
+-- * File Name          : STM32F405_415_407_417_UFBGA176.bsd                         *
+-- * Author             : STMicroelectronics www.st.com                              *
+-- * Version            : V1.1                                                       *
+-- * Date               : 05/30/2014                                                 *
+-- * Description        : Boundary Scan Description Language (BSDL) file for the     *
+-- *                      STM32F405_415_407_417_UFBGA176 Microcontrollers.           *
+-- ***********************************************************************************
+-- * THE PRESENT SOFTWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS     *
+-- * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.*
+-- * AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,        *
+-- * INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE   *
+-- * CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING         *
+-- * INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.                 *
+-- ***********************************************************************************
+-- * This BSDL file has been syntaxed checked and validated by:                      *                                                                 
+-- * GOEPEL SyntaxChecker Version 3.1.2                                              *
+-- ***********************************************************************************
+
+ entity STM32F405_415_407_417_UFBGA176 is
+ 
+ -- This section identifies the default device package selected.
+   
+   generic (PHYSICAL_PIN_MAP: string:= "UFBGA176_PACKAGE");
+   
+-- This section declares all the ports in the design.
+   
+   port ( 
+            BOOT0      : in      bit;
+            JTCK       : in      bit;
+            JTDO       : out     bit;
+            JTDI       : in      bit;
+            JTMS       : in      bit;
+            JTRST      : in      bit;
+            NRST       : in      bit;
+            PA0        : inout   bit;
+            PA1        : inout   bit;
+            PA2        : inout   bit;
+            PA3        : inout   bit;
+            PA4        : inout   bit;
+            PA5        : inout   bit;
+            PA6        : inout   bit;
+            PA7        : inout   bit;
+            PA8        : inout   bit;
+            PA9        : inout   bit;
+            PA10       : inout   bit;
+            PA11       : inout   bit;
+            PA12       : inout   bit;
+            PB0        : inout   bit;
+            PB1        : inout   bit;
+            PB2        : inout   bit;
+            PB5        : inout   bit;
+            PB6        : inout   bit;
+            PB7        : inout   bit;
+            PB8        : inout   bit;
+            PB9        : inout   bit;
+            PB10       : inout   bit;
+            PB11       : inout   bit;
+            PB12       : inout   bit;
+            PB13       : inout   bit;
+            PB14       : inout   bit;
+            PB15       : inout   bit;
+            PC0        : inout   bit;
+            PC1        : inout   bit;
+            PC2        : inout   bit;
+            PC3        : inout   bit;
+            PC4        : inout   bit;
+            PC5        : inout   bit;
+            PC6        : inout   bit;
+            PC7        : inout   bit;
+            PC8        : inout   bit;
+            PC9        : inout   bit;
+            PC10       : inout   bit;
+            PC11       : inout   bit;
+            PC12       : inout   bit;
+            PC13       : inout   bit;
+            PC14       : inout   bit;
+            PC15       : inout   bit;
+            PD0        : inout   bit;
+            PD1        : inout   bit;
+            PD2        : inout   bit;
+            PD3        : inout   bit;
+            PD4        : inout   bit;
+            PD5        : inout   bit;
+            PD6        : inout   bit;
+            PD7        : inout   bit;
+            PD8        : inout   bit;
+            PD9        : inout   bit;
+            PD10       : inout   bit;
+            PD11       : inout   bit;
+            PD12       : inout   bit;
+            PD13       : inout   bit;
+            PD14       : inout   bit;
+            PD15       : inout   bit;
+            PE0        : inout   bit;
+            PE1        : inout   bit;
+            PE2        : inout   bit;
+            PE3        : inout   bit;
+            PE4        : inout   bit;
+            PE5        : inout   bit;
+            PE6        : inout   bit;
+            PE7        : inout   bit;
+            PE8        : inout   bit;
+            PE9        : inout   bit;
+            PE10       : inout   bit;
+            PE11       : inout   bit;
+            PE12       : inout   bit;
+            PE13       : inout   bit;
+            PE14       : inout   bit;
+            PE15       : inout   bit;
+            PF0        : inout   bit;
+            PF1        : inout   bit;
+            PF2        : inout   bit;
+            PF3        : inout   bit;
+            PF4        : inout   bit;
+            PF5        : inout   bit;
+            PF6        : inout   bit;
+            PF7        : inout   bit;
+            PF8        : inout   bit;
+            PF9        : inout   bit;
+            PF10       : inout   bit;
+            PF11       : inout   bit;
+            PF12       : inout   bit;
+            PF13       : inout   bit;
+            PF14       : inout   bit;
+            PF15       : inout   bit;
+            PG0        : inout   bit;
+            PG1        : inout   bit;
+            PG2        : inout   bit;
+            PG3        : inout   bit;
+            PG4        : inout   bit;
+            PG5        : inout   bit;
+            PG6        : inout   bit;
+            PG7        : inout   bit;
+            PG8        : inout   bit;
+            PG9        : inout   bit;
+            PG10       : inout   bit;
+            PG11       : inout   bit;
+            PG12       : inout   bit;
+            PG13       : inout   bit;
+            PG14       : inout   bit;
+            PG15       : inout   bit;
+            PH0        : inout   bit;
+            PH1        : inout   bit;
+            PH2        : inout   bit;
+            PH3        : inout   bit;
+            PH4        : inout   bit;
+            PH5        : inout   bit;
+            PH6        : inout   bit;
+            PH7        : inout   bit;
+            PH8        : inout   bit;
+            PH9        : inout   bit;
+            PH10       : inout   bit;
+            PH11       : inout   bit;
+            PH12       : inout   bit;
+            PH13       : inout   bit;
+            PH14       : inout   bit;
+            PH15       : inout   bit;
+            PI0        : inout   bit;
+            PI1        : inout   bit;
+            PI2        : inout   bit;
+            PI3        : inout   bit;
+            PI4        : inout   bit;
+            PI5        : inout   bit;
+            PI6        : inout   bit;
+            PI7        : inout   bit;
+            PI8        : inout   bit;
+            PI9        : inout   bit;
+            PI10       : inout   bit;
+            PI11       : inout   bit;
+            VBAT       : linkage bit;
+            VCAP1      : linkage bit;
+            VCAP2      : linkage bit;
+            VDD        : linkage bit_vector(0 to 13);
+            VDDA       : linkage bit;
+            VREFPLUS   : linkage bit;
+            VREFMINUS  : linkage bit;
+            PDR_ON     : linkage bit;
+            BYPASS_REG : linkage bit;
+            VSS        : linkage bit_vector(0 to 10);
+            VSSA       : linkage bit
+	);
+
+   use STD_1149_1_2001.all;
+   
+   attribute COMPONENT_CONFORMANCE of STM32F405_415_407_417_UFBGA176: entity is "STD_1149_1_2001";
+   
+   attribute PIN_MAP of STM32F405_415_407_417_UFBGA176 : entity is PHYSICAL_PIN_MAP;
+   
+-- This section specifies the pin map for each port. This information is extracted from the 
+-- port-to-pin map file that was read in using the "read_pin_map" command.
+   
+     constant UFBGA176_PACKAGE: PIN_MAP_STRING :=
+         "BOOT0      : D6," &
+         "JTCK       : A14," &
+         "JTDO       : A10," &
+         "JTDI       : A13," &
+         "JTMS       : A15," &
+         "JTRST      : A9," &
+         "NRST       : J1," &
+         "PA0        : N3," &
+         "PA1        : N2," &
+         "PA2        : P2," &
+         "PA3        : R2," &
+         "PA4        : N4," &
+         "PA5        : P4," &
+         "PA6        : P3," &
+         "PA7        : R3," &
+         "PA8        : F15," &
+         "PA9        : E15," &
+         "PA10       : D15," &
+         "PA11       : C15," &
+         "PA12       : B15," &
+         "PB0        : R5," &
+         "PB1        : R4," &
+         "PB2        : M6," &
+         "PB5        : A6," &
+         "PB6        : B6," &
+         "PB7        : B5," &
+         "PB8        : A5," &
+         "PB9        : B4," &
+         "PB10       : R12," &
+         "PB11       : R13," &
+         "PB12       : P12," &
+         "PB13       : P13," &
+         "PB14       : R14," &
+         "PB15       : R15," &
+         "PC0        : M2," &
+         "PC1        : M3," &
+         "PC2        : M4," &
+         "PC3        : M5," &
+         "PC4        : N5," &
+         "PC5        : P5," &
+         "PC6        : H15," &
+         "PC7        : G15," &
+         "PC8        : G14," &
+         "PC9        : F14," &
+         "PC10       : B14," &
+         "PC11       : B13," &
+         "PC12       : A12," &
+         "PC13       : D1," &
+         "PC14       : E1," &
+         "PC15       : F1," &
+         "PD0        : B12," &
+         "PD1        : C12," &
+         "PD2        : D12," &
+         "PD3        : D11," &
+         "PD4        : D10," &
+         "PD5        : C11," &
+         "PD6        : B11," &
+         "PD7        : A11," &
+         "PD8        : P15," &
+         "PD9        : P14," &
+         "PD10       : N15," &
+         "PD11       : N14," &
+         "PD12       : N13," &
+         "PD13       : M15," &
+         "PD14       : M14," &
+         "PD15       : L14," &
+         "PE0        : A4," &
+         "PE1        : A3," &
+         "PE2        : A2," &
+         "PE3        : A1," &
+         "PE4        : B1," &
+         "PE5        : B2," &
+         "PE6        : B3," &
+         "PE7        : R8," &
+         "PE8        : P8," &
+         "PE9        : P9," &
+         "PE10       : R9," &
+         "PE11       : P10," &
+         "PE12       : R10," &
+         "PE13       : N11," &
+         "PE14       : P11," &
+         "PE15       : R11," &
+         "PF0        : E2," &
+         "PF1        : H3," &
+         "PF2        : H2," &
+         "PF3        : J2," &
+         "PF4        : J3," &
+         "PF5        : K3," &
+         "PF6        : K2," &
+         "PF7        : K1," &
+         "PF8        : L3," &
+         "PF9        : L2," &
+         "PF10       : L1," &
+         "PF11       : R6," &
+         "PF12       : P6," &
+         "PF13       : N6," &
+         "PF14       : R7," &
+         "PF15       : P7," &
+         "PG0        : N7," &
+         "PG1        : M7," &
+         "PG2        : L15," &
+         "PG3        : K15," &
+         "PG4        : K14," &
+         "PG5        : K13," &
+         "PG6        : J15," &
+         "PG7        : J14," &
+         "PG8        : H14," &
+         "PG9        : C10," &
+         "PG10       : B10," &
+         "PG11       : B9," &
+         "PG12       : B8," &
+         "PG13       : A8," &
+         "PG14       : A7," &
+         "PG15       : B7," &
+         "PH0        : G1," &
+         "PH1        : H1," &
+         "PH2        : F4," &
+         "PH3        : G4," &
+         "PH4        : H4," &
+         "PH5        : J4," &
+         "PH6        : M11," &
+         "PH7        : N12," &
+         "PH8        : M12," &
+         "PH9        : M13," &
+         "PH10       : L13," &
+         "PH11       : L12," &
+         "PH12       : K12," &
+         "PH13       : E12," &
+         "PH14       : E13," &
+         "PH15       : D13," &
+         "PI0        : E14," &
+         "PI1        : D14," &
+         "PI2        : C14," &
+         "PI3        : C13," &
+         "PI4        : D4," &
+         "PI5        : C4," &
+         "PI6        : C3," &
+         "PI7        : C2," &
+         "PI8        : D2," &
+         "PI9        : D3," &
+         "PI10       : E3," &
+         "PI11       : E4," &
+         "VBAT       : C1," &
+         "VCAP1      : M10," &
+         "VCAP2      : F13," &
+         "VDD        : (F3, G3, K4, N8, N9, N10, J12, J13, H13, G13, C9, C8, C7, C5)," &
+         "VDDA       : R1," &
+         "VREFPLUS   : P1," &
+         "VREFMINUS  : N1," &
+         "VSS        : (D5, F2, G2, M8, M9, H12, G12, F12, D9, D8, D7)," &
+         "BYPASS_REG : L4," &
+         "PDR_ON     : C6," &
+         "VSSA       : M1";
+	  
+-- This section specifies the TAP ports. For the TAP TCK port, the parameters in the brackets are:
+--        First Field : Maximum  TCK frequency.
+--        Second Field: Allowable states TCK may be stopped in.
+   
+   attribute TAP_SCAN_CLOCK of JTCK  : signal is (10.0e6, BOTH);
+   attribute TAP_SCAN_IN    of JTDI  : signal is true;
+   attribute TAP_SCAN_MODE  of JTMS  : signal is true;
+   attribute TAP_SCAN_OUT   of JTDO  : signal is true;
+   attribute TAP_SCAN_RESET of JTRST : signal is true;
+   
+-- Specifies the compliance enable patterns for the design. It lists a set of 
+-- design ports and the values that they should be set to, in order to enable 
+-- compliance to IEEE Std 1149.1
+   
+   attribute COMPLIANCE_PATTERNS of STM32F405_415_407_417_UFBGA176: entity is 
+        "(NRST) (0)";
+   
+-- Specifies the number of bits in the instruction register.
+
+   attribute INSTRUCTION_LENGTH of STM32F405_415_407_417_UFBGA176: entity is 5;
+
+-- Specifies the boundary-scan instructions implemented in the design and their opcodes.
+   
+   attribute INSTRUCTION_OPCODE of STM32F405_415_407_417_UFBGA176: entity is 
+     "BYPASS  (11111)," &
+     "EXTEST  (00000)," &
+     "SAMPLE  (00010)," &
+     "PRELOAD (00010)," &
+     "IDCODE  (00001)";
+   
+-- Specifies the bit pattern that is loaded into the instruction register when the TAP controller 
+-- passes through the Capture-IR state. The standard mandates that the two LSBs must be "01". The 
+-- remaining bits are design specific.
+   
+   attribute INSTRUCTION_CAPTURE of STM32F405_415_407_417_UFBGA176: entity is "XXX01";
+
+-- Specifies the bit pattern that is loaded into the DEVICE_ID register during the IDCODE 
+-- instruction when the TAP controller passes through the Capture-DR state.
+   
+   attribute IDCODE_REGISTER of STM32F405_415_407_417_UFBGA176: entity is 
+     "XXXX" &                  -- 4-bit version number
+     "0110010000010011" &      -- 16-bit part number
+     "00000100000" &           -- 11-bit identity of the manufacturer
+     "1";                      -- Required by IEEE Std 1149.1
+ 
+-- This section specifies the test data register placed between TDI and TDO for each implemented 
+-- instruction.
+   
+   attribute REGISTER_ACCESS of STM32F405_415_407_417_UFBGA176: entity is 
+        "BYPASS    (BYPASS)," &
+        "BOUNDARY  (EXTEST, SAMPLE, PRELOAD)," &
+        "DEVICE_ID (IDCODE)";
+
+-- Specifies the length of the boundary scan register.
+   
+   attribute BOUNDARY_LENGTH of STM32F405_415_407_417_UFBGA176: entity is 406;
+ 
+-- The following list specifies the characteristics of each cell in the boundary scan register from 
+-- TDI to TDO. The following is a description of the label fields:
+--      num     : Is the cell number.
+--      cell    : Is the cell type as defined by the standard.
+--      port    : Is the design port name. Control cells do not have a port name.
+--      function: Is the function of the cell as defined by the standard. Is one of input, output2, 
+--                output3, bidir, control or controlr.
+--      safe    : Specifies the value that the BSR cell should be loaded with for safe operation 
+--                when the software might otherwise choose a random value.
+--      ccell   : The control cell number. Specifies the control cell that drives the output enable 
+--                for this port.
+--      disval  : Specifies the value that is loaded into the control cell to disable the output 
+--                enable for the corresponding port.
+--      rslt    : Resulting state. Shows the state of the driver when it is disabled.
+  
+    attribute BOUNDARY_REGISTER of STM32F405_415_407_417_UFBGA176: entity is 
+--
+--    num	cell	port		function	safe  [ccell  disval  rslt]
+--
+       "405      (BC_1,       *,          CONTROL,        1),                     	" &
+       "404      (BC_1,     PE2,          OUTPUT3,        X,	 405,	1,	Z),	" &
+       "403      (BC_4,     PE2,          INPUT,	  X),				" &
+       "402      (BC_1,       *,          CONTROL,        1),                     	" &
+       "401      (BC_1,     PE3,          OUTPUT3,        X,	 402,	1,	Z),	" &
+       "400      (BC_4,     PE3,          INPUT,	  X),				" &
+       "399      (BC_1,       *,          CONTROL,        1),                     	" &
+       "398      (BC_1,     PE4,          OUTPUT3,        X,	 399,	1,	Z),	" &
+       "397      (BC_4,     PE4,          INPUT,	  X),				" &
+       "396      (BC_1,       *,          CONTROL,        1),                     	" &
+       "395      (BC_1,     PE5,          OUTPUT3,        X,	 396,	1,	Z),	" &
+       "394      (BC_4,     PE5,          INPUT,	  X),				" &
+       "393      (BC_1,       *,          CONTROL,        1),                     	" &
+       "392      (BC_1,     PE6,          OUTPUT3,        X,	 393,	1,	Z),	" &
+       "391      (BC_4,     PE6,          INPUT,	  X),				" &
+       "390      (BC_1,       *,          CONTROL,        1),                     	" &
+       "389      (BC_1,     PI8,          OUTPUT3,        X,	 390,	1,	Z),	" &
+       "388      (BC_4,     PI8,          INPUT,	  X),				" &
+       "387      (BC_1,       *,          CONTROL,        1),                     	" &
+       "386      (BC_1,    PC13,          OUTPUT3,        X,	 387,	1,	Z),	" &
+       "385      (BC_4,    PC13,          INPUT,	  X),				" &
+       "384      (BC_1,       *,          CONTROL,        1),                     	" &
+       "383      (BC_1,    PC14,          OUTPUT3,        X,	 384,	1,	Z),	" &
+       "382      (BC_4,    PC14,          INPUT,	  X),				" &
+       "381      (BC_1,       *,          CONTROL,        1),                     	" &
+       "380      (BC_1,    PC15,          OUTPUT3,        X,	 381,	1,	Z),	" &
+       "379      (BC_4,    PC15,          INPUT,	  X),				" &
+       "378      (BC_1,       *,          CONTROL,        1),                     	" &
+       "377      (BC_1,     PI9,          OUTPUT3,        X,	 378,	1,	Z),	" &
+       "376      (BC_4,     PI9,          INPUT,	  X),				" &
+       "375      (BC_1,       *,          CONTROL,        1),                     	" &
+       "374      (BC_1,    PI10,          OUTPUT3,        X,	 375,	1,	Z),	" &
+       "373      (BC_4,    PI10,          INPUT,	  X),				" &
+       "372      (BC_1,       *,          CONTROL,        1),                     	" &
+       "371      (BC_1,    PI11,          OUTPUT3,        X,	 372,	1,	Z),	" &
+       "370      (BC_4,    PI11,          INPUT,	  X),				" &
+       "369      (BC_1,       *,          CONTROL,        1),                     	" &
+       "368      (BC_1,     PF0,          OUTPUT3,        X,	 369,	1,	Z),	" &
+       "367      (BC_4,     PF0,          INPUT,	  X),				" &
+       "366      (BC_1,       *,          CONTROL,        1),                     	" &
+       "365      (BC_1,     PF1,          OUTPUT3,        X,	 366,	1,	Z),	" &
+       "364      (BC_4,     PF1,          INPUT,	  X),				" &
+       "363      (BC_1,       *,          CONTROL,        1),                     	" &
+       "362      (BC_1,     PF2,          OUTPUT3,        X,	 363,	1,	Z),	" &
+       "361      (BC_4,     PF2,          INPUT,	  X),				" &
+       "360      (BC_1,       *,          CONTROL,        1),                     	" &
+       "359      (BC_1,     PF3,          OUTPUT3,        X,	 360,	1,	Z),	" &
+       "358      (BC_4,     PF3,          INPUT,	  X),				" &
+       "357      (BC_1,       *,          CONTROL,        1),                     	" &
+       "356      (BC_1,     PF4,          OUTPUT3,        X,	 357,	1,	Z),	" &
+       "355      (BC_4,     PF4,          INPUT,	  X),				" &
+       "354      (BC_1,       *,          CONTROL,        1),                     	" &
+       "353      (BC_1,     PF5,          OUTPUT3,        X,	 354,	1,	Z),	" &
+       "352      (BC_4,     PF5,          INPUT,	  X),				" &
+       "351      (BC_1,       *,          CONTROL,        1),                     	" &
+       "350      (BC_1,     PF6,          OUTPUT3,        X,	 351,	1,	Z),	" &
+       "349      (BC_4,     PF6,          INPUT,	  X),				" &
+       "348      (BC_1,       *,          CONTROL,        1),                     	" &
+       "347      (BC_1,     PF7,          OUTPUT3,        X,	 348,	1,	Z),	" &
+       "346      (BC_4,     PF7,          INPUT,	  X),				" &
+       "345      (BC_1,       *,          CONTROL,        1),                     	" &
+       "344      (BC_1,     PF8,          OUTPUT3,        X,	 345,	1,	Z),	" &
+       "343      (BC_4,     PF8,          INPUT,	  X),				" &
+       "342      (BC_1,       *,          CONTROL,        1),                     	" &
+       "341      (BC_1,     PF9,          OUTPUT3,        X,	 342,	1,	Z),	" &
+       "340      (BC_4,     PF9,          INPUT,	  X),				" &
+       "339      (BC_1,       *,          CONTROL,        1),                     	" &
+       "338      (BC_1,    PF10,          OUTPUT3,        X,	 339,	1,	Z),	" &
+       "337      (BC_4,    PF10,          INPUT,	  X),				" &
+       "336      (BC_1,       *,          CONTROL,        1),                     	" &
+       "335      (BC_1,     PH0,          OUTPUT3,        X,	 336,	1,	Z),	" &
+       "334      (BC_4,     PH0,          INPUT,	  X),				" &
+       "333      (BC_1,       *,          CONTROL,        1),                     	" &
+       "332      (BC_1,     PH1,          OUTPUT3,        X,	 333,	1,	Z),	" &
+       "331      (BC_4,     PH1,          INPUT,	  X),				" &
+       "330      (BC_1,       *,          CONTROL,        1),                     	" &
+       "329      (BC_1,     PC0,          OUTPUT3,        X,	 330,	1,	Z),	" &
+       "328      (BC_4,     PC0,          INPUT,	  X),				" &
+       "327      (BC_1,       *,          CONTROL,        1),                     	" &
+       "326      (BC_1,     PC1,          OUTPUT3,        X,	 327,	1,	Z),	" &
+       "325      (BC_4,     PC1,          INPUT,	  X),				" &
+       "324      (BC_1,       *,          CONTROL,        1),                     	" &
+       "323      (BC_1,     PC2,          OUTPUT3,        X,	 324,	1,	Z),	" &
+       "322      (BC_4,     PC2,          INPUT,	  X),				" &
+       "321      (BC_1,       *,          CONTROL,        1),                     	" &
+       "320      (BC_1,     PC3,          OUTPUT3,        X,	 321,	1,	Z),	" &
+       "319      (BC_4,     PC3,          INPUT,	  X),				" &
+       "318      (BC_1,       *,          CONTROL,        1),                     	" &
+       "317      (BC_1,     PA0,          OUTPUT3,        X,	 318,	1,	Z),	" &
+       "316      (BC_4,     PA0,          INPUT,	  X),				" &
+       "315      (BC_1,       *,          CONTROL,        1),                     	" &
+       "314      (BC_1,     PA1,          OUTPUT3,        X,	 315,	1,	Z),	" &
+       "313      (BC_4,     PA1,          INPUT,	  X),				" &
+       "312      (BC_1,       *,          CONTROL,        1),                     	" &
+       "311      (BC_1,     PA2,          OUTPUT3,        X,	 312,	1,	Z),	" &
+       "310      (BC_4,     PA2,          INPUT,	  X),				" &
+       "309      (BC_1,       *,          CONTROL,        1),                     	" &
+       "308      (BC_1,     PH2,          OUTPUT3,        X,	 309,	1,	Z),	" &
+       "307      (BC_4,     PH2,          INPUT,	  X),				" &
+       "306      (BC_1,       *,          CONTROL,        1),                     	" &
+       "305      (BC_1,     PH3,          OUTPUT3,        X,	 306,	1,	Z),	" &
+       "304      (BC_4,     PH3,          INPUT,	  X),				" &
+       "303      (BC_1,       *,          CONTROL,        1),                     	" &
+       "302      (BC_1,     PH4,          OUTPUT3,        X,	 303,	1,	Z),	" &
+       "301      (BC_4,     PH4,          INPUT,	  X),				" &
+       "300      (BC_1,       *,          CONTROL,        1),                     	" &
+       "299      (BC_1,     PH5,          OUTPUT3,        X,	 300,	1,	Z),	" &
+       "298      (BC_4,     PH5,          INPUT,	  X),				" &
+       "297      (BC_1,       *,          CONTROL,        1),                     	" &
+       "296      (BC_1,     PA3,          OUTPUT3,        X,	 297,	1,	Z),	" &
+       "295      (BC_4,     PA3,          INPUT,	  X),				" &
+       "294      (BC_1,       *,          CONTROL,        1),                     	" &
+       "293      (BC_1,     PA4,          OUTPUT3,        X,	 294,	1,	Z),	" &
+       "292      (BC_4,     PA4,          INPUT,	  X),				" &
+       "291      (BC_1,       *,          CONTROL,        1),                     	" &
+       "290      (BC_1,     PA5,          OUTPUT3,        X,	 291,	1,	Z),	" &
+       "289      (BC_4,     PA5,          INPUT,	  X),				" &
+       "288      (BC_1,       *,          CONTROL,        1),                     	" &
+       "287      (BC_1,     PA6,          OUTPUT3,        X,	 288,	1,	Z),	" &
+       "286      (BC_4,     PA6,          INPUT,	  X),				" &
+       "285      (BC_1,       *,          CONTROL,        1),                     	" &
+       "284      (BC_1,     PA7,          OUTPUT3,        X,	 285,	1,	Z),	" &
+       "283      (BC_4,     PA7,          INPUT,	  X),				" &
+       "282      (BC_1,       *,          CONTROL,        1),                     	" &
+       "281      (BC_1,     PC4,          OUTPUT3,        X,	 282,	1,	Z),	" &
+       "280      (BC_4,     PC4,          INPUT,	  X),				" &
+       "279      (BC_1,       *,          CONTROL,        1),                     	" &
+       "278      (BC_1,     PC5,          OUTPUT3,        X,	 279,	1,	Z),	" &
+       "277      (BC_4,     PC5,          INPUT,	  X),				" &
+       "276      (BC_1,       *,          CONTROL,        1),                     	" &
+       "275      (BC_1,     PB0,          OUTPUT3,        X,	 276,	1,	Z),	" &
+       "274      (BC_4,     PB0,          INPUT,	  X),				" &
+       "273      (BC_1,       *,          CONTROL,        1),                     	" &
+       "272      (BC_1,     PB1,          OUTPUT3,        X,	 273,	1,	Z),	" &
+       "271      (BC_4,     PB1,          INPUT,	  X),				" &
+       "270      (BC_1,       *,          CONTROL,        1),                     	" &
+       "269      (BC_1,     PB2,          OUTPUT3,        X,	 270,	1,	Z),	" &
+       "268      (BC_4,     PB2,          INPUT,	  X),				" &
+       "267      (BC_1,       *,          CONTROL,        1),                     	" &
+       "266      (BC_1,    PF11,          OUTPUT3,        X,	 267,	1,	Z),	" &
+       "265      (BC_4,    PF11,          INPUT,	  X),				" &
+       "264      (BC_1,       *,          CONTROL,        1),                     	" &
+       "263      (BC_1,    PF12,          OUTPUT3,        X,	 264,	1,	Z),	" &
+       "262      (BC_4,    PF12,          INPUT,	  X),				" &
+       "261      (BC_1,       *,          CONTROL,        1),                     	" &
+       "260      (BC_1,    PF13,          OUTPUT3,        X,	 261,	1,	Z),	" &
+       "259      (BC_4,    PF13,          INPUT,	  X),				" &
+       "258      (BC_1,       *,          CONTROL,        1),                     	" &
+       "257      (BC_1,    PF14,          OUTPUT3,        X,	 258,	1,	Z),	" &
+       "256      (BC_4,    PF14,          INPUT,	  X),				" &
+       "255      (BC_1,       *,          CONTROL,        1),                     	" &
+       "254      (BC_1,    PF15,          OUTPUT3,        X,	 255,	1,	Z),	" &
+       "253      (BC_4,    PF15,          INPUT,	  X),				" &
+       "252      (BC_1,       *,          CONTROL,        1),                     	" &
+       "251      (BC_1,     PG0,          OUTPUT3,        X,	 252,	1,	Z),	" &
+       "250      (BC_4,     PG0,          INPUT,	  X),				" &
+       "249      (BC_1,       *,          CONTROL,        1),                     	" &
+       "248      (BC_1,     PG1,          OUTPUT3,        X,	 249,	1,	Z),	" &
+       "247      (BC_4,     PG1,          INPUT,	  X),				" &
+       "246      (BC_1,       *,          CONTROL,        1),                     	" &
+       "245      (BC_1,     PE7,          OUTPUT3,        X,	 246,	1,	Z),	" &
+       "244      (BC_4,     PE7,          INPUT,	  X),				" &
+       "243      (BC_1,       *,          CONTROL,        1),                     	" &
+       "242      (BC_1,     PE8,          OUTPUT3,        X,	 243,	1,	Z),	" &
+       "241      (BC_4,     PE8,          INPUT,	  X),				" &
+       "240      (BC_1,       *,          CONTROL,        1),                     	" &
+       "239      (BC_1,     PE9,          OUTPUT3,        X,	 240,	1,	Z),	" &
+       "238      (BC_4,     PE9,          INPUT,	  X),				" &
+       "237      (BC_1,       *,          CONTROL,        1),                     	" &
+       "236      (BC_1,    PE10,          OUTPUT3,        X,	 237,	1,	Z),	" &
+       "235      (BC_4,    PE10,          INPUT,	  X),				" &
+       "234      (BC_1,       *,          CONTROL,        1),                     	" &
+       "233      (BC_1,    PE11,          OUTPUT3,        X,	 234,	1,	Z),	" &
+       "232      (BC_4,    PE11,          INPUT,	  X),				" &
+       "231      (BC_1,       *,          CONTROL,        1),                     	" &
+       "230      (BC_1,    PE12,          OUTPUT3,        X,	 231,	1,	Z),	" &
+       "229      (BC_4,    PE12,          INPUT,	  X),				" &
+       "228      (BC_1,       *,          CONTROL,        1),                     	" &
+       "227      (BC_1,    PE13,          OUTPUT3,        X,	 228,	1,	Z),	" &
+       "226      (BC_4,    PE13,          INPUT,	  X),				" &
+       "225      (BC_1,       *,          CONTROL,        1),                     	" &
+       "224      (BC_1,    PE14,          OUTPUT3,        X,	 225,	1,	Z),	" &
+       "223      (BC_4,    PE14,          INPUT,	  X),				" &
+       "222      (BC_1,       *,          CONTROL,        1),                     	" &
+       "221      (BC_1,    PE15,          OUTPUT3,        X,	 222,	1,	Z),	" &
+       "220      (BC_4,    PE15,          INPUT,	  X),				" &
+       "219      (BC_1,       *,          CONTROL,        1),                     	" &
+       "218      (BC_1,    PB10,          OUTPUT3,        X,	 219,	1,	Z),	" &
+       "217      (BC_4,    PB10,          INPUT,	  X),				" &
+       "216      (BC_1,       *,          CONTROL,        1),                     	" &
+       "215      (BC_1,    PB11,          OUTPUT3,        X,	 216,	1,	Z),	" &
+       "214      (BC_4,    PB11,          INPUT,	  X),				" &
+       "213      (BC_1,       *,          CONTROL,        1),                     	" &
+       "212      (BC_1,     PH6,          OUTPUT3,        X,	 213,	1,	Z),	" &
+       "211      (BC_4,     PH6,          INPUT,	  X),				" &
+       "210      (BC_1,       *,          CONTROL,        1),                     	" &
+       "209      (BC_1,     PH7,          OUTPUT3,        X,	 210,	1,	Z),	" &
+       "208      (BC_4,     PH7,          INPUT,	  X),				" &
+       "207      (BC_1,       *,          CONTROL,        1),                     	" &
+       "206      (BC_1,     PH8,          OUTPUT3,        X,	 207,	1,	Z),	" &
+       "205      (BC_4,     PH8,          INPUT,	  X),				" &
+       "204      (BC_1,       *,          CONTROL,        1),                     	" &
+       "203      (BC_1,     PH9,          OUTPUT3,        X,	 204,	1,	Z),	" &
+       "202      (BC_4,     PH9,          INPUT,	  X),				" &
+       "201      (BC_1,       *,          CONTROL,        1),                     	" &
+       "200      (BC_1,    PH10,          OUTPUT3,        X,	 201,	1,	Z),	" &
+       "199      (BC_4,    PH10,          INPUT,	  X),				" &
+       "198      (BC_1,       *,          CONTROL,        1),                     	" &
+       "197      (BC_1,    PH11,          OUTPUT3,        X,	 198,	1,	Z),	" &
+       "196      (BC_4,    PH11,          INPUT,	  X),				" &
+       "195      (BC_1,       *,          CONTROL,        1),                     	" &
+       "194      (BC_1,    PH12,          OUTPUT3,        X,	 195,	1,	Z),	" &
+       "193      (BC_4,    PH12,          INPUT,	  X),				" &
+       "192      (BC_1,       *,          CONTROL,        1),                     	" &
+       "191      (BC_1,    PB12,          OUTPUT3,        X,	 192,	1,	Z),	" &
+       "190      (BC_4,    PB12,          INPUT,	  X),				" &
+       "189      (BC_1,       *,          CONTROL,        1),                     	" &
+       "188      (BC_1,    PB13,          OUTPUT3,        X,	 189,	1,	Z),	" &
+       "187      (BC_4,    PB13,          INPUT,	  X),				" &
+       "186      (BC_1,       *,          CONTROL,        1),                     	" &
+       "185      (BC_1,    PB14,          OUTPUT3,        X,	 186,	1,	Z),	" &
+       "184      (BC_4,    PB14,          INPUT,	  X),				" &
+       "183      (BC_1,       *,          CONTROL,        1),                     	" &
+       "182      (BC_1,    PB15,          OUTPUT3,        X,	 183,	1,	Z),	" &
+       "181      (BC_4,    PB15,          INPUT,	  X),				" &
+       "180      (BC_1,       *,          CONTROL,        1),                     	" &
+       "179      (BC_1,     PD8,          OUTPUT3,        X,	 180,	1,	Z),	" &
+       "178      (BC_4,     PD8,          INPUT,	  X),				" &
+       "177      (BC_1,       *,          CONTROL,        1),                     	" &
+       "176      (BC_1,     PD9,          OUTPUT3,        X,	 177,	1,	Z),	" &
+       "175      (BC_4,     PD9,          INPUT,	  X),				" &
+       "174      (BC_1,       *,          CONTROL,        1),                     	" &
+       "173      (BC_1,    PD10,          OUTPUT3,        X,	 174,	1,	Z),	" &
+       "172      (BC_4,    PD10,          INPUT,	  X),				" &
+       "171      (BC_1,       *,          CONTROL,        1),                     	" &
+       "170      (BC_1,    PD11,          OUTPUT3,        X,	 171,	1,	Z),	" &
+       "169      (BC_4,    PD11,          INPUT,	  X),				" &
+       "168      (BC_1,       *,          CONTROL,        1),                     	" &
+       "167      (BC_1,    PD12,          OUTPUT3,        X,	 168,	1,	Z),	" &
+       "166      (BC_4,    PD12,          INPUT,	  X),				" &
+       "165      (BC_1,       *,          CONTROL,        1),                     	" &
+       "164      (BC_1,    PD13,          OUTPUT3,        X,	 165,	1,	Z),	" &
+       "163      (BC_4,    PD13,          INPUT,	  X),				" &
+       "162      (BC_1,       *,          CONTROL,        1),                     	" &
+       "161      (BC_1,    PD14,          OUTPUT3,        X,	 162,	1,	Z),	" &
+       "160      (BC_4,    PD14,          INPUT,	  X),				" &
+       "159      (BC_1,       *,          CONTROL,        1),                     	" &
+       "158      (BC_1,    PD15,          OUTPUT3,        X,	 159,	1,	Z),	" &
+       "157      (BC_4,    PD15,          INPUT,	  X),				" &
+       "156      (BC_1,       *,          CONTROL,        1),                     	" &
+       "155      (BC_1,     PG2,          OUTPUT3,        X,	 156,	1,	Z),	" &
+       "154      (BC_4,     PG2,          INPUT,	  X),				" &
+       "153      (BC_1,       *,          CONTROL,        1),                     	" &
+       "152      (BC_1,     PG3,          OUTPUT3,        X,	 153,	1,	Z),	" &
+       "151      (BC_4,     PG3,          INPUT,	  X),				" &
+       "150      (BC_1,       *,          CONTROL,        1),                     	" &
+       "149      (BC_1,     PG4,          OUTPUT3,        X,	 150,	1,	Z),	" &
+       "148      (BC_4,     PG4,          INPUT,	  X),				" &
+       "147      (BC_1,       *,          CONTROL,        1),                     	" &
+       "146      (BC_1,     PG5,          OUTPUT3,        X,	 147,	1,	Z),	" &
+       "145      (BC_4,     PG5,          INPUT,	  X),				" &
+       "144      (BC_1,       *,          CONTROL,        1),                     	" &
+       "143      (BC_1,     PG6,          OUTPUT3,        X,	 144,	1,	Z),	" &
+       "142      (BC_4,     PG6,          INPUT,	  X),				" &
+       "141      (BC_1,       *,          CONTROL,        1),                     	" &
+       "140      (BC_1,     PG7,          OUTPUT3,        X,	 141,	1,	Z),	" &
+       "139      (BC_4,     PG7,          INPUT,	  X),				" &
+       "138      (BC_1,       *,          CONTROL,        1),                     	" &
+       "137      (BC_1,     PG8,          OUTPUT3,        X,	 138,	1,	Z),	" &
+       "136      (BC_4,     PG8,          INPUT,	  X),				" &
+       "135      (BC_1,       *,          CONTROL,        1),                     	" &
+       "134      (BC_1,     PC6,          OUTPUT3,        X,	 135,	1,	Z),	" &
+       "133      (BC_4,     PC6,          INPUT,	  X),				" &
+       "132      (BC_1,       *,          CONTROL,        1),                     	" &
+       "131      (BC_1,     PC7,          OUTPUT3,        X,	 132,	1,	Z),	" &
+       "130      (BC_4,     PC7,          INPUT,	  X),				" &
+       "129      (BC_1,       *,          CONTROL,        1),                     	" &
+       "128      (BC_1,     PC8,          OUTPUT3,        X,	 129,	1,	Z),	" &
+       "127      (BC_4,     PC8,          INPUT,	  X),				" &
+       "126      (BC_1,       *,          CONTROL,        1),                     	" &
+       "125      (BC_1,     PC9,          OUTPUT3,        X,	 126,	1,	Z),	" &
+       "124      (BC_4,     PC9,          INPUT,	  X),				" &
+       "123      (BC_1,       *,          CONTROL,        1),                     	" &
+       "122      (BC_1,     PA8,          OUTPUT3,        X,	 123,	1,	Z),	" &
+       "121      (BC_4,     PA8,          INPUT,	  X),				" &
+       "120      (BC_1,       *,          CONTROL,        1),                     	" &
+       "119      (BC_1,     PA9,          OUTPUT3,        X,	 120,	1,	Z),	" &
+       "118      (BC_4,     PA9,          INPUT,	  X),				" &
+       "117      (BC_1,       *,          CONTROL,        1),                     	" &
+       "116      (BC_1,    PA10,          OUTPUT3,        X,	 117,	1,	Z),	" &
+       "115      (BC_4,    PA10,          INPUT,	  X),				" &
+       "114      (BC_1,       *,          CONTROL,        1),                     	" &
+       "113      (BC_1,    PA11,          OUTPUT3,        X,	 114,	1,	Z),	" &
+       "112      (BC_4,    PA11,          INPUT,	  X),				" &
+       "111      (BC_1,       *,          CONTROL,        1),                     	" &
+       "110      (BC_1,    PA12,          OUTPUT3,        X,	 111,	1,	Z),	" &
+       "109      (BC_4,    PA12,          INPUT,	  X),				" &
+       "108      (BC_1,       *,          CONTROL,        1),                     	" &
+       "107      (BC_1,    PH13,          OUTPUT3,        X,	 108,	1,	Z),	" &
+       "106      (BC_4,    PH13,          INPUT,	  X),				" &
+       "105      (BC_1,       *,          CONTROL,        1),                     	" &
+       "104      (BC_1,    PH14,          OUTPUT3,        X,	 105,	1,	Z),	" &
+       "103      (BC_4,    PH14,          INPUT,	  X),				" &
+       "102      (BC_1,       *,          CONTROL,        1),                     	" &
+       "101      (BC_1,    PH15,          OUTPUT3,        X,	 102,	1,	Z),	" &
+       "100      (BC_4,    PH15,          INPUT,	  X),				" &
+       "99       (BC_1,       *,          CONTROL,        1),                     	" &
+       "98       (BC_1,     PI0,          OUTPUT3,        X,	  99,	1,	Z),	" &
+       "97       (BC_4,     PI0,          INPUT,	  X),				" &
+       "96       (BC_1,       *,          CONTROL,        1),                     	" &
+       "95       (BC_1,     PI1,          OUTPUT3,        X,	  96,	1,	Z),	" &
+       "94       (BC_4,     PI1,          INPUT,	  X),				" &
+       "93       (BC_1,       *,          CONTROL,        1),                     	" &
+       "92       (BC_1,     PI2,          OUTPUT3,        X,	  93,	1,	Z),	" &
+       "91       (BC_4,     PI2,          INPUT,	  X),				" &
+       "90       (BC_1,       *,          CONTROL,        1),                     	" &
+       "89       (BC_1,     PI3,          OUTPUT3,        X,	  90,	1,	Z),	" &
+       "88       (BC_4,     PI3,          INPUT,	  X),				" &
+       "87       (BC_1,       *,          CONTROL,        1),                     	" &
+       "86       (BC_1,    PC10,          OUTPUT3,        X,	  87,	1,	Z),	" &
+       "85       (BC_4,    PC10,          INPUT,	  X),				" &
+       "84       (BC_1,       *,          CONTROL,        1),                     	" &
+       "83       (BC_1,    PC11,          OUTPUT3,        X,	  84,	1,	Z),	" &
+       "82       (BC_4,    PC11,          INPUT,	  X),				" &
+       "81       (BC_1,       *,          CONTROL,        1),                     	" &
+       "80       (BC_1,    PC12,          OUTPUT3,        X,	  81,	1,	Z),	" &
+       "79       (BC_4,    PC12,          INPUT,	  X),				" &
+       "78       (BC_1,       *,          CONTROL,        1),                     	" &
+       "77       (BC_1,     PD0,          OUTPUT3,        X,	  78,	1,	Z),	" &
+       "76       (BC_4,     PD0,          INPUT,	  X),				" &
+       "75       (BC_1,       *,          CONTROL,        1),                     	" &
+       "74       (BC_1,     PD1,          OUTPUT3,        X,	  75,	1,	Z),	" &
+       "73       (BC_4,     PD1,          INPUT,	  X),				" &
+       "72       (BC_1,       *,          CONTROL,        1),                     	" &
+       "71       (BC_1,     PD2,          OUTPUT3,        X,	  72,	1,	Z),	" &
+       "70       (BC_4,     PD2,          INPUT,	  X),				" &
+       "69       (BC_1,       *,          CONTROL,        1),                     	" &
+       "68       (BC_1,     PD3,          OUTPUT3,        X,	  69,	1,	Z),	" &
+       "67       (BC_4,     PD3,          INPUT,	  X),				" &
+       "66       (BC_1,       *,          CONTROL,        1),                     	" &
+       "65       (BC_1,     PD4,          OUTPUT3,        X,	  66,	1,	Z),	" &
+       "64       (BC_4,     PD4,          INPUT,	  X),				" &
+       "63       (BC_1,       *,          CONTROL,        1),                     	" &
+       "62       (BC_1,     PD5,          OUTPUT3,        X,	  63,	1,	Z),	" &
+       "61       (BC_4,     PD5,          INPUT,	  X),				" &
+       "60       (BC_1,       *,          CONTROL,        1),                     	" &
+       "59       (BC_1,     PD6,          OUTPUT3,        X,	  60,	1,	Z),	" &
+       "58       (BC_4,     PD6,          INPUT,	  X),				" &
+       "57       (BC_1,       *,          CONTROL,        1),                     	" &
+       "56       (BC_1,     PD7,          OUTPUT3,        X,	  57,	1,	Z),	" &
+       "55       (BC_4,     PD7,          INPUT,	  X),				" &
+       "54       (BC_1,       *,          CONTROL,        1),                     	" &
+       "53       (BC_1,     PG9,          OUTPUT3,        X,	  54,	1,	Z),	" &
+       "52       (BC_4,     PG9,          INPUT,	  X),				" &
+       "51       (BC_1,       *,          CONTROL,        1),                     	" &
+       "50       (BC_1,    PG10,          OUTPUT3,        X,	  51,	1,	Z),	" &
+       "49       (BC_4,    PG10,          INPUT,	  X),				" &
+       "48       (BC_1,       *,          CONTROL,        1),                     	" &
+       "47       (BC_1,    PG11,          OUTPUT3,        X,	  48,	1,	Z),	" &
+       "46       (BC_4,    PG11,          INPUT,	  X),				" &
+       "45       (BC_1,       *,          CONTROL,        1),                     	" &
+       "44       (BC_1,    PG12,          OUTPUT3,        X,	  45,	1,	Z),	" &
+       "43       (BC_4,    PG12,          INPUT,	  X),				" &
+       "42       (BC_1,       *,          CONTROL,        1),                     	" &
+       "41       (BC_1,    PG13,          OUTPUT3,        X,	  42,	1,	Z),	" &
+       "40       (BC_4,    PG13,          INPUT,	  X),				" &
+       "39       (BC_1,       *,          CONTROL,        1),                     	" &
+       "38       (BC_1,    PG14,          OUTPUT3,        X,	  39,	1,	Z),	" &
+       "37       (BC_4,    PG14,          INPUT,	  X),				" &
+       "36       (BC_1,       *,          CONTROL,        1),                     	" &
+       "35       (BC_1,    PG15,          OUTPUT3,        X,	  36,	1,	Z),	" &
+       "34       (BC_4,    PG15,          INPUT,	  X),				" &
+       "33       (BC_1,       *,          CONTROL,        1),                     	" &
+       "32       (BC_1,     PB5,          OUTPUT3,        X,	  33,	1,	Z),	" &
+       "31       (BC_4,     PB5,          INPUT,	  X),				" &
+       "30       (BC_1,       *,          CONTROL,        1),                     	" &
+       "29       (BC_1,     PB6,          OUTPUT3,        X,	  30,	1,	Z),	" &
+       "28       (BC_4,     PB6,          INPUT,	  X),				" &
+       "27       (BC_1,       *,          CONTROL,        1),                     	" &
+       "26       (BC_1,     PB7,          OUTPUT3,        X,	  27,	1,	Z),	" &
+       "25       (BC_4,     PB7,          INPUT,	  X),				" &
+       "24       (BC_4,   BOOT0,          INPUT,	  X),				" &
+       "23       (BC_1,       *,          CONTROL,        1),                     	" &
+       "22       (BC_1,     PB8,          OUTPUT3,        X,	  23,	1,	Z),	" &
+       "21       (BC_4,     PB8,          INPUT,	  X),				" &
+       "20       (BC_1,       *,          CONTROL,        1),                     	" &
+       "19       (BC_1,     PB9,          OUTPUT3,        X,	  20,	1,	Z),	" &
+       "18       (BC_4,     PB9,          INPUT,	  X),				" &
+       "17       (BC_1,       *,          CONTROL,        1),                     	" &
+       "16       (BC_1,     PE0,          OUTPUT3,        X,	  17,	1,	Z),	" &
+       "15       (BC_4,     PE0,          INPUT,	  X),				" &
+       "14       (BC_1,       *,          CONTROL,        1),                     	" &
+       "13       (BC_1,     PE1,          OUTPUT3,        X,	  14,	1,	Z),	" &
+       "12       (BC_4,     PE1,          INPUT,	  X),				" &
+       "11       (BC_1,       *,          CONTROL,        1),                     	" &
+       "10       (BC_1,     PI4,          OUTPUT3,        X,	  11,	1,	Z),	" &
+       "9        (BC_4,     PI4,          INPUT,	  X),				" &
+       "8        (BC_1,       *,          CONTROL,        1),                     	" &
+       "7        (BC_1,     PI5,          OUTPUT3,        X,	   8,	1,	Z),	" &
+       "6        (BC_4,     PI5,          INPUT,	  X),				" &
+       "5        (BC_1,       *,          CONTROL,        1),                     	" &
+       "4        (BC_1,     PI6,          OUTPUT3,        X,	   5,	1,	Z),	" &
+       "3        (BC_4,     PI6,          INPUT,	  X),				" &
+       "2        (BC_1,       *,          CONTROL,        1),                     	" &
+       "1        (BC_1,     PI7,          OUTPUT3,        X,	   2,	1,	Z),	" &
+       "0        (BC_4,     PI7,          INPUT,	  X) 				" ; 
+
+      attribute DESIGN_WARNING of STM32F405_415_407_417_UFBGA176: entity is
+        "Device configuration can effect boundary scan behavior. " &
+        "Keep the NRST pin low to ensure default boundary scan operation " &
+        "as described in this file." ;          
+
+   end STM32F405_415_407_417_UFBGA176;
+
+
+-- ******************* (C) COPYRIGHT 2014 STMicroelectronics *****END OF FILE********  
