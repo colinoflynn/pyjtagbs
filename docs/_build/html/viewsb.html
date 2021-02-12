@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ViewSB Interface &#8212; JTAGBS 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Prerequisites" href="installing.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h1 class="logo"><a href="index.html">JTAGBS</a></h1>
+
+
+<p class="blurb">Python JTAG Boundary Scan library</p>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="viewsb-interface">
+<span id="viewsb"></span><h1>ViewSB Interface<a class="headerlink" href="#viewsb-interface" title="Permalink to this headline">¶</a></h1>
+<p>The open-source ViewSB project at <a class="reference external" href="https://github.com/usb-tools/ViewSB">https://github.com/usb-tools/ViewSB</a> can be used as a visual
+front-end for PhyWhisperer. It currently works on Linux/Mac only, and could be started as such:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">viewsb</span><span class="o">.</span><span class="n">sh</span> <span class="n">phywhisperer</span>
+</pre></div>
+</div>
+<p>By default it starts capturing right away and fills its entire 8188-entry FIFO.
+You can specify a pattern and mask to kick off the capture, as well as the capture size; for
+example, to begin capturing 4000 events when [0x2d, 0x00] is seen:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">viewsb</span><span class="o">.</span><span class="n">sh</span> <span class="n">phywhisperer</span> <span class="o">--</span><span class="n">pattern</span> <span class="mi">45</span> <span class="mi">0</span> <span class="o">--</span><span class="n">mask</span> <span class="mi">255</span> <span class="mi">255</span> <span class="o">--</span><span class="n">size</span> <span class="mi">4000</span>
+</pre></div>
+</div>
+<p>By default, incoming data is captured and processed concurrently. This allows for longer
+captures. Setting size to 0 gives an unlimited capture – until the PhyWhisperer’s internal FIFO
+overflows, or the capture times out (default of 5 seconds), whichever comes first.</p>
+<p>The phywhisperer backend supports a few other options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>timeout: Capture timeout in seconds (0 = no timeout). Defaults to 5 seconds.</p></li>
+<li><dl class="simple">
+<dt>addpattern: If set, the capture pattern is inserted in the captured data. Otherwise,</dt><dd><p>the captured data begins with what was seen after the pattern. Defaults off.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>burst: wait for capture to be complete before reading the captured data</dt><dd><p>(i.e. don’t capture and process concurrently). With this option, captures
+are limited to a maximum of 8188. Defaults off.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Note that for high-speed targets, you may be able to capture considerably more data when not
+using ViewSB, due to the additional overhead that ViewSB incurs.</p>
+<p>As with all other ViewSB backends, you can specify a variety of front-ends,
+including a prototype QT-based GUI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">viewsb</span><span class="o">.</span><span class="n">sh</span> <span class="n">phywhisperer</span> <span class="n">qt</span> <span class="o">--</span><span class="n">pattern</span> <span class="mi">45</span> <span class="o">--</span><span class="n">mask</span> <span class="mi">255</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2021, NewAE Technology Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/viewsb.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/coflynn/pyjtagbs" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
