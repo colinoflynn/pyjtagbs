@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API &#8212; JTAGBS 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="installing" href="installing.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h1 class="logo"><a href="index.html">JTAGBS</a></h1>
+
+
+<p class="blurb">Python JTAG Boundary Scan library</p>
+
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API</a><ul>
+<li><a class="reference internal" href="#jtagbs">JTAGBS</a></li>
+<li><a class="reference internal" href="#jtagcore">JTAGCore</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="api">
+<span id="id1"></span><h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<p>This is where the documentation for the public API functions, and classes lives.</p>
+<div class="section" id="jtagbs">
+<h2>JTAGBS<a class="headerlink" href="#jtagbs" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="jtagbs.JTAGBS">
+<em class="property">class </em><code class="sig-name descname">JTAGBS</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">interface</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGBS" title="Permalink to this definition">¶</a></dt>
+<dd><p>JTAG Boundry Scan (JTAGBS) Top-Level Module - simply JTAG access to pins and stuff</p>
+<dl class="py method">
+<dt id="jtagbs.JTAGBS.get_device">
+<code class="sig-name descname">get_device</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device_index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGBS.get_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Device() object of the given index, attached to this JTAG chain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGBS.init_scanchain">
+<code class="sig-name descname">init_scanchain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGBS.init_scanchain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the JTAG chain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGBS.list_available_probes">
+<code class="sig-name descname">list_available_probes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGBS.list_available_probes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns string list of detected probes, index of string used to select a probe</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGBS.list_devices">
+<code class="sig-name descname">list_devices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGBS.list_devices" title="Permalink to this definition">¶</a></dt>
+<dd><p>List info about each part</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGBS.list_devids">
+<code class="sig-name descname">list_devids</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGBS.list_devids" title="Permalink to this definition">¶</a></dt>
+<dd><p>List detected device IDs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGBS.open_probe">
+<code class="sig-name descname">open_probe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">probe</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGBS.open_probe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a probe by index or name - name will match partial list</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGBS.scan">
+<code class="sig-name descname">scan</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGBS.scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a scan, so updates register values</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="jtagcore">
+<h2>JTAGCore<a class="headerlink" href="#jtagcore" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="jtagbs.JTAGCore">
+<em class="property">class </em><code class="sig-name descname">JTAGCore</code><a class="headerlink" href="#jtagbs.JTAGCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Python interface for JTAG Boundary Scanner library.</p>
+<p>This is a wrapper around the C DLL</p>
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.bsdl_attach">
+<code class="sig-name descname">bsdl_attach</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span></em>, <em class="sig-param"><span class="n">device_number</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.bsdl_attach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attach a BSDL file to a given device on the chain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.deinit">
+<code class="sig-name descname">deinit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.deinit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close connection - on some devices code will hang if you don’t call this</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.get_bsdl_id">
+<code class="sig-name descname">get_bsdl_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.get_bsdl_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the device id in a BSDL file (useful to match files)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.get_devid">
+<code class="sig-name descname">get_devid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device_number</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.get_devid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a given device ID in the chain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.get_number_devices">
+<code class="sig-name descname">get_number_devices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.get_number_devices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get number of devices detected in the chain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.get_number_of_pins">
+<code class="sig-name descname">get_number_of_pins</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device_number</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.get_number_of_pins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get total number of pins in device</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.get_pin_id">
+<code class="sig-name descname">get_pin_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device_number</span></em>, <em class="sig-param"><span class="n">pinname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.get_pin_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a pin name to a pin number/id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.get_pin_properties">
+<code class="sig-name descname">get_pin_properties</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device_number</span></em>, <em class="sig-param"><span class="n">pinid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.get_pin_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get pin name &amp; type from numeric pin id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.get_pin_state">
+<code class="sig-name descname">get_pin_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device_number</span></em>, <em class="sig-param"><span class="n">pinid</span></em>, <em class="sig-param"><span class="n">pintype</span><span class="o">=</span><span class="default_value">'input'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.get_pin_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get state of a pin register (normally input)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.get_probe_names">
+<code class="sig-name descname">get_probe_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.get_probe_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the name of returned probes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.open_probe">
+<code class="sig-name descname">open_probe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">probeid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.open_probe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to open the given probe</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.scan">
+<code class="sig-name descname">scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">write_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform an update of the JTAG chain status, can do writeonly to ignore inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.scan_init_chain">
+<code class="sig-name descname">scan_init_chain</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.scan_init_chain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Init the scan chain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.set_debug_level">
+<code class="sig-name descname">set_debug_level</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.set_debug_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set level from 0 (verbose) to 4 (little)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.set_pin_state">
+<code class="sig-name descname">set_pin_state</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device</span></em>, <em class="sig-param"><span class="n">pinid</span></em>, <em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">pintype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.set_pin_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or clear a bit in a given output register (output or oe)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="jtagbs.JTAGCore.set_scan_mode">
+<code class="sig-name descname">set_scan_mode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">device_number</span></em>, <em class="sig-param"><span class="n">mode</span></em><span class="sig-paren">)</span><a class="headerlink" href="#jtagbs.JTAGCore.set_scan_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set scan mode to passive (sample) or active (extest)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2021, NewAE Technology Inc..
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/coflynn/pyjtagbs" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
