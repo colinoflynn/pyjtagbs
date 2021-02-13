@@ -15,7 +15,7 @@ print(jtag.list_devices())
 
 stm32 = jtag.get_device(1)
 
-stm32.set_bsdl(r"bsdl_files/st/stm32f4/STM32F405_415_407_417_LQFP64.bsd")
+stm32.set_bsdl(r"../bsdl_files/st/stm32f4/STM32F405_415_407_417_LQFP64.bsd")
 
 print(stm32.list_pins())
 
