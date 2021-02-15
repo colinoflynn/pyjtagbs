@@ -21,47 +21,7 @@
 import pylink
 import struct
 import os
-import json
-
-from jtagbs.bsdlparser import bsdl
-
-class BsdlSemantics:
-    def map_string(self, ast):
-        parser = bsdl.bsdlParser()
-        ast = parser.parse(''.join(ast), "port_map")
-        return ast
-
-    def grouped_port_identification(self, ast):
-        parser = bsdl.bsdlParser()
-        ast = parser.parse(''.join(ast), "group_table")
-        return ast
-        
-class BSDLFile(object):
-    def __init__(self, filename):
-
-        if not os.path.exists(filename):
-            raise IOError("Check path: %s"%filename, filename)
-
-        with open(filename) as f:
-            text = f.read()
-            parser = bsdl.bsdlParser()
-            ast = parser.parse(text, "bsdl_description", semantics=BsdlSemantics(), parseinfo=False)
-            bsdldict = dict(ast.asjson())
-
-        self.bsdl = bsdldict
-        
-    def name(self):
-        return self.bsdl['component_name']
-    
-    def opcode(self, opcodename):
-        opcodes = self.bsdl['instruction_register_description']['instruction_opcodes']
-        
-        for opcode in opcodes:
-            if opcode['instruction_name'].upper() == opcodename.upper():
-                return opcode['opcode_list'][0]
-        
-        raise ValueError("Instruction %s not found in list: %s"%(opcodename, opcodes))
-        
+from jtagbs import bsdl
 
 class JTAGRawBS(object):
     def scan_init_chain(self):
@@ -147,6 +107,8 @@ class JTAGRawBS(object):
         self._jtag_reset()
         self.tdo_flush(0, 6) #clock out 6x 0's
         
+        self.bsdl = [None]*self.num_devices
+        
     def _jtag_reset(self):
         self.tms_write(0b11111, 5)
 
@@ -164,41 +126,23 @@ class JTAGRawBS(object):
     def bsdl_attach(self, filepath, device_number):
         """Attach a BSDL file to a given device on the chain"""
 
-        bsdl = BSDLFile(filepath)
+        self.bsdl[device_number] = bsdl.BSDLFile(filepath)
         
-        print(bsdl.name())
-        print(bsdl.opcode('SAMPLE'))
-        
-        print(json.dumps(bsdl.bsdl, indent=1))
-        
-        #print(bsdl.bsdl['optional_register_description']) #--> {'idcode_register': ['XXXX', '0110010000010011', '00000100000', '1']}
-        
-        #print(bsdl.bsdl['boundary_scan_register_description'].keys())
-        
-        #print(bsdl.bsdl.keys())
+        #print(bsdlfile.bsdl['optional_register_description']) #--> {'idcode_register': ['XXXX', '0110010000010011', '00000100000', '1']}
 
-        #raise NotImplementedError("oops")
-        
     def get_bsdl_id(self, filepath):
         """Find the device id in a BSDL file (useful to match files)"""
-
-        if not os.path.exists(filepath):
-            raise IOError("Check path: %s"%filepath, filepath)
 
         raise NotImplementedError("oops")
 
     def get_number_of_pins(self, device_number):
         """Get total number of pins in device"""
 
-        raise NotImplementedError("oops")
+        return len(self.bsdl[device_number].io_regs)
 
     def get_pin_id(self, device_number, pinname):
         """Convert a pin name to a pin number/id"""
-
-        if isinstance(pinname, str):
-            pinname = pinname.encode("utf-8")
-        
-        raise NotImplementedError("oops")
+        return
 
     def get_pin_state(self, device_number, pinid, pintype="input"):
         """Get state of a pin register (normally input)"""
@@ -211,9 +155,9 @@ class JTAGRawBS(object):
     def get_pin_properties(self, device_number, pinid):
         """Get pin name & type from numeric pin id"""
 
-        raise NotImplementedError("oops")
+        pin = self.bsdl[device_number].io_regs[pinid]
         
-        #return {"name":buf.value.decode(), "location":"", "type":pintype}
+        #return {"name":pin[, "location":"", "type":pintype}
 
     def set_pin_state(self, device, pinid, state, pintype):
         """Set or clear a bit in a given output register (output or oe)"""

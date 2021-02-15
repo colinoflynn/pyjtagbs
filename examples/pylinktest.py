@@ -17,7 +17,7 @@ jtag.init_scanchain()
 print(jtag.list_devids())
 print(jtag.list_devices())
 
-stm32 = jtag.get_device(1)
+s6lx9 = jtag.get_device(0)
 
 #stm32.set_bsdl(r"../bsdl_files/st/stm32f4/STM32F405_415_407_417_LQFP64.bsd")
-stm32.set_bsdl(r"../bsdl_files/xilinx/xc6slx9_tqg144.bsd")
+s6lx9.set_bsdl(r"../bsdl_files/xilinx/xc6slx9_tqg144.bsd")
