@@ -118,17 +118,25 @@ class JTAGRawBS(object):
         return self.num_devices
 
     def get_devid(self, device_number):
-        """Get a given device ID in the chain"""
+        """Get a given device IDCODE from the chain"""
 
         return self.device_idlist[device_number]
 
 
-    def bsdl_attach(self, filepath, device_number):
+    def bsdl_attach(self, filepath, device_number, force=False):
         """Attach a BSDL file to a given device on the chain"""
 
-        self.bsdl[device_number] = bsdl.BSDLFile(filepath)
+        file = bsdl.BSDLFile(filepath)
         
-        #print(bsdlfile.bsdl['optional_register_description']) #--> {'idcode_register': ['XXXX', '0110010000010011', '00000100000', '1']}
+        fileidcode = file.get_idcode()
+        scanchainidcode = self.get_devid(device_number)
+        
+        if fileidcode != scanchainidcode:
+            if force == False:
+                raise IOError("BSDL file idcode: %s, detected idcode %s"%(fileidcode, scanchainidcode))
+        
+        self.bsdl[device_number] = file
+
 
     def get_bsdl_id(self, filepath):
         """Find the device id in a BSDL file (useful to match files)"""
