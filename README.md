@@ -1,8 +1,8 @@
-# Python JTAG Boundry Scan (pyjtagbs)
+# JTAG with the BS (Boundary Scan) - pyjtagbs
 
-*If you've tried to get boundary scan working under Python, you'll truely appreciate the name pyjtagbs.*
+*If you've tried to get boundary scan working under Python, you'll truly appreciate the name pyjtagbs.*
 
-This is a thin wrapper on a very nice library currenting, giving you simple Python access to JTAG boundry scan pins.
+This is a thin wrapper on a very nice library currently, giving you simple Python access to JTAG Boundary Scan pins. Future work will implement some features in native Python (most of it already exists in other libraries).
 
 ```
 from jtagbs import JTAGCore, JTAGBS
@@ -59,7 +59,11 @@ The device can use a J-Link, it needs Segger's DLL as well for that. For some re
 
 Future work may support other backends - some of the features (such as BSDL parsing) required are available in Python implementations already. However having SPI & I2C access is nice with the speed of the compiled C library.
 
-## Other Tools worth Mentioning
+### PyLink Interface
+
+The initial "other backend" is the PyLink interface.
+
+## Other Tools Worth Mentioning
 
 * urJTAG - open source JTAG tooling, the original!
 * TopJTAG - low-cost ($100) with GUI that shows each pin on the package itself - very handy for debug.
@@ -74,4 +78,4 @@ BSDL files are found around the web. For ST devices, see the "CAD Resources" tab
 
 ## JTAG Notes
 
-Some devices have JTAG that is shared between debug & boundry scan by a physical pin (for example - Microchip SAM3U). For these devices your board is likely configured only for debug access, you may need to cahgne a pin strap or similar.
+Some devices have JTAG that is shared between debug & boundary scan by a physical pin (for example - Microchip SAM3U). For these devices your board is likely configured only for debug access, you may need to change a pin strap or similar.
