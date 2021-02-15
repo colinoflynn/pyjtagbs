@@ -1,5 +1,9 @@
 # python-bsdl-parser
 
+**THIS IS AN EXTERNAL PROJECT ADDED TO PYJTAGBS** - see https://github.com/cyrozap/python-bsdl-parser .
+
+This module is Copyright (c) 2016, Forest Crossman.
+
 This is a [Grako][Grako]-based parser for IEEE 1149.1 Boundary-Scan Description
 Language (BSDL) files.
 
