@@ -1,5 +1,5 @@
 # PyJtagBS J-Link interface via PyLink
-# Copyright (c) 2021 Colin O'Flynn [Python interface portion]
+# Copyright (c) 2021 Colin O'Flynn
 #
 # This file is HEAVILY based on code from "JTAG Core library", which is:
 # Copyright (c) 2008 - 2021 Viveris Technologies (but also LGPGv2.1)
@@ -22,9 +22,7 @@ import pylink
 import struct
 
 class PyLink(object):
-    """Python interface for JTAG Boundary Scanner library.
-
-    This is a wrapper around the C DLL"""
+    """Python interface for JTAG via PyLink Library (which talks to JLink)"""
 
     def __init__(self):
         self.jlink = pylink.JLink()
