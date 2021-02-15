@@ -21,7 +21,7 @@
 import pylink
 import struct
 
-class PyLink(object):
+class PyLinkRawBS(object):
     """Python interface for JTAG via PyLink Library (which talks to JLink)"""
 
     def __init__(self):

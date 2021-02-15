@@ -1,7 +1,7 @@
 from jtagbs import jtagbs
-from jtagbs.pylink import pylink
+from jtagbs.pylinkbs import pylinkbs
 
-interface = pylink.PyLink()
+interface = pylinkbs.PyLinkRawBS()
 
 jtag = jtagbs.JTAGBS(interface)
 
