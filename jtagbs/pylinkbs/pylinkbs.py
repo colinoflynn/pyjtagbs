@@ -21,41 +21,7 @@
 import pylink
 import struct
 
-class PyLinkRawBS(object):
-    """Python interface for JTAG via PyLink Library (which talks to JLink)"""
-
-    def __init__(self):
-        self.jlink = pylink.JLink()
-
-    def get_probe_names(self):
-        """Get the name of returned probes"""
-        probes = {}
-        ems = self.jlink.connected_emulators()
-        for i, em in enumerate(ems):
-            em = str(em)
-            probes[em] = i
-        return probes
-
-    def open_probe(self, probeid=None):
-        """Try to open the given probe"""
-        #TODO - ignore probeid for now
-        self.jlink.open()
-        
-    def tms_write(self, value, bits):
-        """Write a sequence out TMS, keeping TDO low, and return result"""
-        if bits > 8:
-            raise AttributeError("oops my bad")
-        
-        return self.jlink.jtag_rawrw([0], [value], bits)
-    
-    def tdo_flush(self, flushval, bits):
-        """Write a constant 1 or 0 out TDO, keeping TMS low, and return result"""
-        bytes = int(((bits%8)+bits) / 8)
-        if flushval:
-            return self.jlink.jtag_rawrw([0xff]*bytes, [0]*bytes, bits)
-        else:
-            return self.jlink.jtag_rawrw([0]*bytes, [0]*bytes, bits)
-
+class JTAGRawBS(object):
     def scan_init_chain(self):
         """Init the scan chain, checking for devices"""
         # Logic is from jtagcore_scan_and_init_chain() library
@@ -85,7 +51,7 @@ class PyLinkRawBS(object):
         
         #Now send 1's for BYPASS instruction to everyone
         self.tdo_flush(1, 1024)
-        self.jlink.jtag_rawrw([1], [1], 1) #TMS high
+        self.jtag_rawrw([1], [1], 1) #TMS high
         
         #Now go to Shift-DR
         self.tms_write(0b0011, 4)
@@ -207,5 +173,51 @@ class PyLinkRawBS(object):
 
     def scan(self, write_only=False):
         """Perform an update of the JTAG chain status, can do writeonly to ignore inputs"""
-        raise NotImplementedError("oops")
         
+        if self.num_devices:
+            #Go to shift-DR state
+            self.tms_write(0b0010, 4)
+            
+            for d in range(0, self.num_devices):
+                pass
+                
+    def tms_write(self, value, bits):
+        """Write a sequence out TMS, keeping TDO low, and return result"""
+        if bits > 8:
+            raise AttributeError("oops my bad")
+        
+        return self.jtag_rawrw([0], [value], bits)
+    
+    def tdo_flush(self, flushval, bits):
+        """Write a constant 1 or 0 out TDO, keeping TMS low, and return result"""
+        bytes = int(((bits%8)+bits) / 8)
+        if flushval:
+            return self.jtag_rawrw([0xff]*bytes, [0]*bytes, bits)
+        else:
+            return self.jtag_rawrw([0]*bytes, [0]*bytes, bits)
+            
+    def jtag_rawrw(self, tdo, tms, num_bits=None):
+        raise NotImplementedError("you need this function!!!!!")
+
+class PyLinkRawBS(JTAGRawBS):
+    """Python interface for JTAG via PyLink Library (which talks to JLink)"""
+
+    def __init__(self):
+        self.jlink = pylink.JLink()
+
+    def get_probe_names(self):
+        """Get the name of returned probes"""
+        probes = {}
+        ems = self.jlink.connected_emulators()
+        for i, em in enumerate(ems):
+            em = str(em)
+            probes[em] = i
+        return probes
+
+    def open_probe(self, probeid=None):
+        """Try to open the given probe"""
+        #TODO - ignore probeid for now
+        self.jlink.open()
+
+    def jtag_rawrw(self, tdo, tms, num_bits=None):
+        return self.jlink.jtag_rawrw(tdo, tms, num_bits)
