@@ -8,7 +8,7 @@ setup(
     description = "JTAG with the BS (Boundary Scan)",
     author = "Colin O'Flynn",
     author_email = 'coflynn@newae.com',
-    license = 'GPLv3',
+    license = 'LGPLv2.1',
     url = 'http://www.newae.com',
     download_url='https://github.com/colinoflynn/pyjtagbs',
     packages = ['jtagbs',
