@@ -51,11 +51,11 @@ class BSDLFile(object):
         self.process_ioregs()
         
     def get_name(self):
-        """Returnt the name of the device"""
+        """Return the name of the device specified in the file"""
         return self.bsdl['component_name']
     
     def get_opcode(self, opcodename):
-        """Return the opcode specified"""
+        """Return the opcode specified - normally one of 'SAMPLE', 'EXTEST', 'BYPASS'"""
         
         opcodes = self.bsdl['instruction_register_description']['instruction_opcodes']
         
@@ -66,7 +66,7 @@ class BSDLFile(object):
         raise ValueError("Instruction %s not found in list: %s"%(opcodename, opcodes))
     
     def number_of_chainbits(self):
-        """Total number of bits in the scan chain"""
+        """Get total number of bits in the scan chain"""
         
         return int(self.bsdl["boundary_scan_register_description"]["fixed_boundary_stmts"]["boundary_length"])
         
@@ -124,7 +124,7 @@ class BSDLFile(object):
             binstr = "".join(rawidcode[1:])
             baseid = int(binstr, 2)
             
-            mask = int("1"*len(binstr), 2)
+            mask = int("1"*len(binstr), 2) #Mask is just how many valid bits are showing up
         except:
             print("Processing failed - debug info to help fix the code:")
             print("  optional_register_description: %s"%self.bsdl['optional_register_description'])
@@ -133,5 +133,5 @@ class BSDLFile(object):
         return (mask, baseid)
     
     def pretty_dump(self):
-        """Return an OK format string we can print"""
+        """Return an OK format string we can print to debug."""
         return json.dumps(self.bsdl, indent=1)
