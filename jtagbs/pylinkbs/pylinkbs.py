@@ -20,6 +20,48 @@
 
 import pylink
 import struct
+import os
+import json
+
+from jtagbs.bsdlparser import bsdl
+
+class BsdlSemantics:
+    def map_string(self, ast):
+        parser = bsdl.bsdlParser()
+        ast = parser.parse(''.join(ast), "port_map")
+        return ast
+
+    def grouped_port_identification(self, ast):
+        parser = bsdl.bsdlParser()
+        ast = parser.parse(''.join(ast), "group_table")
+        return ast
+        
+class BSDLFile(object):
+    def __init__(self, filename):
+
+        if not os.path.exists(filename):
+            raise IOError("Check path: %s"%filename, filename)
+
+        with open(filename) as f:
+            text = f.read()
+            parser = bsdl.bsdlParser()
+            ast = parser.parse(text, "bsdl_description", semantics=BsdlSemantics(), parseinfo=False)
+            bsdldict = dict(ast.asjson())
+
+        self.bsdl = bsdldict
+        
+    def name(self):
+        return self.bsdl['component_name']
+    
+    def opcode(self, opcodename):
+        opcodes = self.bsdl['instruction_register_description']['instruction_opcodes']
+        
+        for opcode in opcodes:
+            if opcode['instruction_name'].upper() == opcodename.upper():
+                return opcode['opcode_list'][0]
+        
+        raise ValueError("Instruction %s not found in list: %s"%(opcodename, opcodes))
+        
 
 class JTAGRawBS(object):
     def scan_init_chain(self):
@@ -118,13 +160,24 @@ class JTAGRawBS(object):
 
         return self.device_idlist[device_number]
 
+
     def bsdl_attach(self, filepath, device_number):
         """Attach a BSDL file to a given device on the chain"""
 
-        if not os.path.exists(filepath):
-            raise IOError("Check path: %s"%filepath, filepath)
+        bsdl = BSDLFile(filepath)
+        
+        print(bsdl.name())
+        print(bsdl.opcode('SAMPLE'))
+        
+        print(json.dumps(bsdl.bsdl, indent=1))
+        
+        #print(bsdl.bsdl['optional_register_description']) #--> {'idcode_register': ['XXXX', '0110010000010011', '00000100000', '1']}
+        
+        #print(bsdl.bsdl['boundary_scan_register_description'].keys())
+        
+        #print(bsdl.bsdl.keys())
 
-        raise NotImplementedError("oops")
+        #raise NotImplementedError("oops")
         
     def get_bsdl_id(self, filepath):
         """Find the device id in a BSDL file (useful to match files)"""

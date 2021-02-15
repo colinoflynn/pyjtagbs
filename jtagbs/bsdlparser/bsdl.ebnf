@@ -1,0 +1,540 @@
+(* python-bsdl-parser
+ *
+ * Copyright (c) 2016, Forest Crossman <cyrozap@gmail.com>
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ *)
+
+(* IEEE Std 1149.1-2013, Annex B *)
+
+@@ignorecase :: True
+@@eol_comments :: /--.*?$/
+
+(* B.5.1 *)
+letters = /[A-Za-z]/ ;
+digit = /[0-9]/ ;
+
+(* B.5.4 *)
+vhdl_identifier = /[a-zA-Z][0-9a-zA-Z_]*/ ;
+mnemonic_identifier = /[A-Za-z0-9\@\*\_\-\+\|\%\~\.]*[A-Za-z]+[A-Za-z0-9\@\*\_\-\+\|\%\~\.]*/ ;
+prefix_identifier = /[a-zA-Z][a-zA-Z0-9_]*/ ;
+
+(* B.5.5 *)
+integer = /[0-9]+/;
+real = /[0-9]+\.[0-9]+([Ee][+-]?)?[0-9]*/ ;
+pattern = /[01Xx]+/ ;
+thirty_two_bit_pattern = "&".{@:/[01Xx]+/} ;
+binary_pattern = /0[bB][01xX][01xX_]*/ ;
+hex_pattern = /0[xX][0-9a-fA-FxX][0-9a-fA-FxX_]*/ ;
+decimal_pattern = /[0-9]/ | /[1-9][0-9]+/ ;
+
+(* B.5.6 *)
+string = "&".{[quote @:?/[A-Za-z0-9\&'\(\)\[\]\*\,\-\+\.\:\;\<\=\>\_\/\t ]+/? quote]} ;
+
+(* B.5.7 *)
+information_tag = /<[A-Za-z0-9\&'\(\)\[\]\*\,\-\+\.\:\;\=\_]+>/ ;
+
+(* B.6.2 *)
+port_id = subscripted_port_name | port_name ;
+port_name = vhdl_identifier ;
+subscripted_port_name = port_name left_paren subscript right_paren ;
+subscript = integer ;
+instruction_name = vhdl_identifier | "BYPASS" | "CLAMP" | "EXTEST" | "HIGHZ" | "IDCODE" |
+    "INTEST" | "PRELOAD" | "RUNBIST" | "SAMPLE" | "USERCODE" |
+    "ECIDCODE" | "CLAMP_HOLD" | "CLAMP_RELEASE" | "TMP_STATUS" |
+    "IC_RESET" | "INIT_SETUP" | "INIT_SETUP_CLAMP" | "INIT_RUN" ;
+
+(* B.8.1 *)
+bsdl_description = "entity" component_name:component_name "is"
+    generic_parameter:generic_parameter
+    logical_port_description:logical_port_description
+    standard_use_statement:standard_use_statement
+    {use_statement:use_statement}
+    component_conformance_statement:component_conformance_statement
+    device_package_pin_mappings:device_package_pin_mappings
+    [grouped_port_identification:grouped_port_identification]
+    scan_port_identification:scan_port_identification
+    [compliance_enable_description:compliance_enable_description]
+    instruction_register_description:instruction_register_description
+    [optional_register_description:optional_register_description]
+    [register_access_description:register_access_description]
+    boundary_scan_register_description:boundary_scan_register_description
+    [runbist_description:runbist_description]
+    [intest_description:intest_description]
+    [system_clock_description:system_clock_description]
+    {register_mnemonics_description:register_mnemonics_description}
+    {register_fields_description:register_fields_description}
+    {register_assembly_description:register_assembly_description}
+    {register_constraints_description:register_constraints_description}
+    {register_association_description:register_association_description}
+    {power_port_association_description:power_port_association_description}
+    {bsdl_extensions:bsdl_extensions}
+    [design_warning:design_warning]
+    "end" component_name semicolon ;
+
+component_name = vhdl_identifier ;
+
+(* B.8.2 *)
+generic_parameter = generic_default | generic_no_default ;
+generic_default = "generic" left_paren "PHYSICAL_PIN_MAP" colon
+    "string" right_paren semicolon ;
+generic_no_default = "generic" left_paren "PHYSICAL_PIN_MAP" colon
+    "string" colon_equal default_device_package_type:default_device_package_type right_paren semicolon ;
+default_device_package_type = quote @:pin_mapping_name quote ;
+
+(* B.8.3 *)
+logical_port_description = "port" left_paren (semicolon).{[@+:pin_spec]}
+    right_paren semicolon ;
+pin_spec = identifier_list:identifier_list colon pin_type:pin_type port_dimension:port_dimension ;
+identifier_list = (comma).{[port_name]} ;
+pin_type = "in" | "out" | "buffer" | "inout" | "LINKAGE_INOUT" |
+    "LINKAGE_BUFFER" | "LINKAGE_IN" | "LINKAGE_OUT" | "LINKAGE_MECHANICAL" |
+    "POWER_0" | "POWER_POS" | "POWER_NEG" | "VREF_IN" | "VREF_OUT" | "linkage";
+port_dimension = bit_vector_spec | "bit" ;
+bit_vector_spec  = "bit_vector" left_paren bit_vector:range right_paren ;
+range = up_range | down_range ;
+up_range = integer1 "to" integer2 ;
+down_range = integer2 "downto" integer1 ;
+integer1 = integer ;
+integer2 = integer ;
+
+(* B.8.4 *)
+standard_use_statement = "use" @:standard_package_name period "all" semicolon ;
+standard_package_name = "STD_1149_1_1990" | "STD_1149_1_1994" |
+    "STD_1149_1_2001" | "STD_1149_1_2013" ;
+
+(* B.8.5 *)
+use_statement = "use" @:user_package_name period "all" semicolon ;
+user_package_name = vhdl_identifier ;
+
+(* B.8.6 *)
+component_conformance_statement = "attribute" "COMPONENT_CONFORMANCE" "of"
+    component_name colon "entity" "is" @:conformance_string semicolon ;
+conformance_string = quote @:conformance_identification quote ;
+conformance_identification = "STD_1149_1_1990" | "STD_1149_1_1993" |
+    "STD_1149_1_2001" | "STD_1149_1_2013" ;
+
+(* B.8.7 *)
+device_package_pin_mappings = pin_map_statement @:pin_mappings ;
+pin_map_statement = "attribute" "PIN_MAP" "of" component_name colon "entity" "is"
+    "PHYSICAL_PIN_MAP" semicolon ;
+pin_mappings = { pin_mapping }+ ;
+pin_mapping = "constant" pin_mapping_name:pin_mapping_name colon "PIN_MAP_STRING" ":="
+    pin_map:map_string semicolon ;
+pin_mapping_name = vhdl_identifier ;
+map_string = string ;
+port_map = (comma).{[port]} ;
+port = port_name:port_name colon pin_list:pin_or_list ;
+pin_or_list = @+:pin_desc | @:pin_list ;
+pin_list = left_paren (comma).{[@:pin_desc]} right_paren ;
+pin_desc = "OPEN" | "TIE0" | "TIE1" | pin_id ;
+pin_id = integer | vhdl_identifier ;
+
+(* B.8.8 *)
+grouped_port_identification = "attribute" "PORT_GROUPING" "of"
+    component_name colon "entity" "is" @:group_table_string semicolon ;
+group_table_string = string ;
+group_table = (comma).{[twin_group_entry]} ;
+twin_group_entry = twin_group_type:twin_group_type left_paren twin_group_list:twin_group_list right_paren ;
+twin_group_type = "DIFFERENTIAL_VOLTAGE" | "DIFFERENTIAL_CURRENT" ;
+twin_group_list = (comma).{[twin_group]} ;
+twin_group = left_paren representative_port:representative_port comma associated_port:associated_port right_paren ;
+representative_port = port_id ;
+associated_port = port_id ;
+
+(* B.8.9 *)
+scan_port_identification = { scan_port_stmt }+ ;
+scan_port_stmt = @:tck_stmt | @:tdi_stmt | @:tms_stmt | @:tdo_stmt | @:trst_stmt ;
+tck_stmt = "attribute" "TAP_SCAN_CLOCK" "of" port_id colon "signal" "is"
+    left_paren tap_scan_clock:clock_record right_paren semicolon ;
+tdi_stmt = "attribute" "TAP_SCAN_IN" "of" port_id colon "signal" "is" tap_scan_in:"true" semicolon ;
+tms_stmt = "attribute" "TAP_SCAN_MODE" "of" port_id colon "signal" "is" tap_scan_mode:"true" semicolon ;
+tdo_stmt = "attribute" "TAP_SCAN_OUT" "of" port_id colon "signal" "is" tap_scan_out:"true" semicolon ;
+trst_stmt = "attribute" "TAP_SCAN_RESET" "of" port_id colon "signal" "is" tap_scan_reset:"true" semicolon ;
+clock_record = frequency:real comma halt_value:halt_state_value ;
+halt_state_value = "LOW" | "BOTH" ;
+
+(* B.8.10 *)
+compliance_enable_description = "attribute" "COMPLIANCE_PATTERNS" "of"
+    component_name colon "entity" "is" compliance_patterns:compliance_pattern_string semicolon ;
+compliance_pattern_string = "&".{quote left_paren compliance_port_list:compliance_port_list right_paren
+    left_paren pattern_list:pattern_list right_paren quote} ;
+compliance_port_list = (comma).{[port_id]} ;
+pattern_list = (comma).{[pattern]} ;
+
+(* B.8.11 *)
+instruction_register_description =
+    instruction_length:instruction_length_stmt
+    instruction_opcodes:instruction_opcode_stmt
+    instruction_capture:instruction_capture_stmt
+    [instruction_private:instruction_private_stmt] ;
+instruction_length_stmt = "attribute" "INSTRUCTION_LENGTH" "of" component_name
+    colon "entity" "is" @:integer semicolon ;
+instruction_opcode_stmt = "attribute" "INSTRUCTION_OPCODE" "of" component_name
+    colon "entity" "is" @:opcode_table_string semicolon ;
+instruction_capture_stmt = "attribute" "INSTRUCTION_CAPTURE" "of" component_name
+    colon "entity" "is" @:pattern_list_string semicolon ;
+instruction_private_stmt = "attribute" "INSTRUCTION_PRIVATE" "of" component_name
+    colon "entity" "is" @:instruction_list_string semicolon ;
+opcode_table_string = "&".{quote (comma).{[@+:opcode_description]} quote} ;
+opcode_description = instruction_name:instruction_name left_paren opcode_list:opcode_list right_paren ;
+opcode_list = (comma).{[@+:opcode]} ;
+opcode = pattern ;
+pattern_list_string = "&".{quote @:opcode_list quote} ;
+instruction_list_string = "&".{quote @:instruction_list quote} ;
+instruction_list = (comma).{[@:instruction_name]} ;
+
+(* B.8.12 *)
+optional_register_description = optional_register_stmt [ optional_register_stmt ] ;
+optional_register_stmt = idcode_statement | usercode_statement ;
+idcode_statement = "attribute" "IDCODE_REGISTER" "of" component_name
+    colon "entity" "is" "&".{quote idcode_register:thirty_two_bit_pattern_list quote} semicolon ;
+usercode_statement = "attribute" "USERCODE_REGISTER" "of" component_name
+    colon "entity" "is" "&".{quote usercode_register:thirty_two_bit_pattern_list quote} semicolon ;
+thirty_two_bit_pattern_list = (comma).{[@:thirty_two_bit_pattern]} ;
+
+(* B.8.13 *)
+register_access_description = "attribute" "REGISTER_ACCESS" "of"
+    component_name colon "entity" "is" @:register_access_string semicolon ;
+register_access_string = "&".{quote (comma).{[@+:register_association]} quote} ;
+register_association = register:register left_paren instruction_capture_list:instruction_capture_list right_paren ;
+instruction_capture_list = (comma).{[instruction_capture]} ;
+instruction_capture = instruction_name:instruction_name [ "CAPTURES" pattern:pattern ] ;
+register = reg_name:std_fixed_register | @:std_var_register | @:design_specific_register ;
+std_fixed_register = "BOUNDARY" | "BYPASS" | "DEVICE_ID" | "TMP_STATUS" ;
+std_var_register = reg_name:std_var_reg_name [ left_bracket reg_length:reg_length right_bracket ] ;
+std_var_reg_name = "ECID" | "INIT_DATA" | "INIT_STATUS" | "RESET_SELECT" ;
+design_specific_register = reg_name:vhdl_identifier [ left_bracket reg_length:reg_length right_bracket ] ;
+reg_length = integer | asterisk ;
+
+(* B.8.14 *)
+boundary_scan_register_description = fixed_boundary_stmts:fixed_boundary_stmts | segment_boundary_stmts:segment_boundary_stmts ;
+fixed_boundary_stmts = boundary_length:boundary_length_stmt boundary_register:boundary_register_stmt ;
+segment_boundary_stmts = assembled_boundary_length:assembled_boundary_length_stmt boundary_register_segments:boundary_register_segments ;
+boundary_length_stmt = "attribute" "BOUNDARY_LENGTH" "of"
+    component_name colon "entity" "is" @:register_length semicolon ;
+register_length = integer ;
+boundary_register_stmt = "attribute" "BOUNDARY_REGISTER" "of"
+    component_name colon "entity" "is" @:cell_table_string semicolon ;
+cell_table_string = "&".{quote @:cell_table quote} ;
+assembled_boundary_length_stmt = "attribute" "ASSEMBLED_BOUNDARY_LENGTH" "of"
+    component_name colon "entity" "is"
+    left_paren reset_length:reset_length comma boundary_length:register_length right_paren semicolon ;
+reset_length = integer ;
+boundary_register_segments = { boundary_register_segment }+ ;
+boundary_register_segment = "attribute" "BOUNDARY_SEGMENT" "of"
+    component_name colon "entity" "is" boundary_segment:boundary_segment_string semicolon ;
+boundary_segment_string = "&".{quote (comma).{[@+:boundary_segment_list]} quote} ;
+boundary_segment_list = segment_name:boundary_segment_name
+    left_bracket segment_length:boundary_segment_length right_bracket
+    left_paren cell_table:cell_table right_paren ;
+boundary_segment_name = vhdl_identifier ;
+boundary_segment_length = integer ;
+cell_table = (comma).{[@:cell_entry]} ;
+cell_entry = cell_number:cell_number left_paren cell_info:cell_info right_paren ;
+cell_number = integer ;
+cell_info = cell_spec:cell_spec [ comma input_or_disable_spec:input_or_disable_spec ] ;
+cell_spec = cell_name:cell_name comma port_id:port_id_or_null comma function:function comma safe_bit:safe_bit ;
+cell_name = vhdl_identifier ;
+port_id_or_null = port_id | asterisk ;
+function = "INPUT" | "OUTPUT2" | "OUTPUT3" | "CONTROL" |
+    "CONTROLR" | "INTERNAL" | "CLOCK" | "BIDIR" | "OBSERVE_ONLY" ;
+safe_bit = "0" | "1" | "X" ;
+input_or_disable_spec = input_spec | disable_spec ;
+input_spec = "EXTERN0" | "EXTERN1" | "PULL0" | "PULL1" | "OPEN0" |
+    "OPEN1" | "KEEPER" | "OPENX" | "EXPECT1" | "EXPECT0" ;
+disable_spec = control_cell:ccell comma disable_value:disable_value comma disable_result:disable_result ;
+ccell = integer ;
+disable_value = "0" | "1" ;
+disable_result = "WEAK0" | "WEAK1" | "PULL0" | "PULL1" | "OPEN0" | "OPEN1" |
+    "KEEPER" | "Z" ;
+
+(* B.8.15 *)
+runbist_description = "attribute" "RUNBIST_EXECUTION" "of" component_name
+    colon "entity" "is" "&".{quote runbist_spec quote} semicolon ;
+runbist_spec = wait_spec comma pin_state comma signature_spec ;
+wait_spec = "WAIT_DURATION" left_paren duration_spec right_paren ;
+duration_spec = clock_cycles_list | time_and_clocks ;
+time_and_clocks = time [ comma clock_cycles_list ] ;
+clock_cycles_list = (comma).{[clock_cycles]} ;
+time = real ;
+clock_cycles = port_id integer ;
+pin_state = "OBSERVING" condition "AT_PINS" ;
+condition = "HIGHZ" | "BOUNDARY" ;
+signature_spec = "EXPECT_DATA" det_pattern ;
+det_pattern = { bit }+ ;
+bit = "0" | "1" ;
+
+(* B.8.16 *)
+intest_description = "attribute" "INTEST_EXECUTION" "of" component_name
+    colon "entity" "is" "&".{quote intest_spec quote} semicolon ;
+intest_spec = wait_spec comma pin_state ;
+
+(* B.8.17 *)
+system_clock_description = "attribute" "SYSCLOCK_REQUIREMENTS"
+    "of" entity_target "is" system_clock_description_string semicolon ;
+system_clock_description_string = "&".{quote (comma).{[system_clock_requirement]} quote} ;
+system_clock_requirement = left_paren port_id comma min_freq comma max_freq
+    comma clocked_instructions right_paren ;
+min_freq = real ;
+max_freq = real ;
+clocked_instructions = (comma).{[clocked_instruction]} ;
+clocked_instruction = "RUNBIST" | "INTEST" | "INIT_SETUP" |
+    "INIT_SETUP_CLAMP" | "INIT_RUN" | "ECIDCODE" | "IC_RESET" | vhdl_identifier ;
+
+(* B.8.18 *)
+register_mnemonics_description = "attribute" "REGISTER_MNEMONICS" "of"
+    target "is" register_mnemonics_string semicolon ;
+target = entity_target | package_target ;
+entity_target = component_name colon "entity" ;
+package_target = user_package_name colon "package" ;
+register_mnemonics_string = "&".{quote (comma).{[mnemonic_definition]} quote} ;
+mnemonic_definition = mnemonic_group_name left_paren mnemonic_list right_paren ;
+mnemonic_group_name = vhdl_identifier ;
+mnemonic_list = (comma).{[mnemonic_assignment]} ;
+mnemonic_assignment = mnemonic_identifier
+    left_paren pattern_specification right_paren [ information_tag ] ;
+pattern_specification = binary_pattern | hex_pattern | decimal_pattern | "others" ;
+
+(* B.8.19 *)
+register_fields_description = "attribute" "REGISTER_FIELDS" "of" target "is"
+    register_fields_string semicolon ;
+register_fields_string = "&".{quote (comma).{[register_field_list]} quote} ;
+register_field_list = reg_or_seg_name left_bracket reg_or_seg_length right_bracket
+    left_paren register_fields right_paren ;
+reg_or_seg_name = tdr | segment_name ;
+tdr = "BOUNDARY" | "BYPASS" | "DEVICE_ID" | "TMP_STATUS" |
+    "ECID" | "INIT_DATA" | "INIT_STATUS" | "RESET_SELECT" |
+    design_specific_tdr_name ;
+segment_name = vhdl_identifier ;
+design_specific_tdr_name = vhdl_identifier ;
+reg_or_seg_length = integer ;
+register_fields = (comma).{[left_paren register_field_element right_paren]} ;
+register_field_element = register_field | prefix_statement ;
+register_field = extended_field_name field_length "is" bit_list_and_options ;
+extended_field_name = prefix_string field_name ;
+prefix_string = { prefix_identifier period } ;
+field_name = vhdl_identifier ;
+field_length = left_bracket integer right_bracket ;
+bit_list_and_options = bit_list { field_options } ;
+field_options = type_assignment | value_assignment | reset_assignment ;
+bit_list = left_paren [ (comma).{[bit_field]} ] right_paren ;
+bit_field = range | integer ;
+prefix_statement = "PREFIX" integer prefix_name ;
+prefix_name = prefix_identifier | minus_sign ;
+
+(* B.8.20 *)
+value_assignment = value_keyword left_paren assignment right_paren ;
+value_keyword = "CAPTURES" | "DEFAULT" | "SAFE" | "RESETVAL" | user_extension ;
+user_extension = "USER" colon user_keyword ;
+user_keyword = vhdl_identifier ;
+assignment = assignment_value | asterisk | minus_sign ;
+assignment_value = binary_pattern | hex_pattern | decimal_pattern | mnemonic_association ;
+mnemonic_association = [ "PACKAGE" package_hierarchy colon ] mnemonic_group_name
+    left_paren mnemonic_default right_paren ;
+mnemonic_default = mnemonic_identifier | asterisk | minus_sign ;
+type_assignment = "NOPI" | "NOPO" | "NOUPD" | "MON" | "PULSE0" | "PULSE1" |
+    "DELAYPO" | "NORETAIN" | "SHARED" | user_extension ;
+reset_assignment = "PORRESET" | "TRSTRESET" | "TAPRESET" | "CHRESET" |
+    "DOMPOR" | "HIERRESET" | local_reset_assignment ;
+local_reset_assignment = reset_type left_paren reset_ident right_paren ;
+reset_type = "RESETOUT" | "RESETIN" ;
+reset_ident = vhdl_identifier ;
+domain_assignment = association_type left_paren association_name right_paren ;
+association_type = "DOMAIN" | "DOMAIN_EXTERNAL" | "SEGMENT" ;
+association_name = vhdl_identifier ;
+
+(* B.8.21 *)
+register_assembly_description = "attribute" "REGISTER_ASSEMBLY" "of" target "is"
+    register_assembly_string semicolon ;
+register_assembly_string = "&".{quote (comma).{[register_assembly_list]} quote} ;
+register_assembly_list = reg_or_seg_name left_paren register_assembly_elements right_paren ;
+register_assembly_elements = (comma).{[left_paren register_element right_paren]} ;
+register_element = instance_and_options | field_and_options | instance_reference |
+    selected_segment_element | boundary_instance | using_statement ;
+instance_and_options = instance_definition { field_assignments } ;
+instance_definition = instance_ident "is" [ "PACKAGE" package_hierarchy colon ]
+    reg_or_seg_name ;
+instance_ident = segment_ident | array_ident ;
+segment_ident = vhdl_identifier ;
+array_ident = "ARRAY" array_segment_ident left_paren range right_paren ;
+array_segment_ident = vhdl_identifier ;
+field_assignments = field_value_assignment | field_reset_assignment |
+    field_domain_assignment | field_selection_assignment ;
+field_value_assignment = [ field_ident colon ] value_assignment ;
+field_reset_assignment = [ field_ident colon ] reset_assignment ;
+field_domain_assignment = [ field_ident colon ] domain_assignment ;
+field_ident = { instance_name period } field_name ;
+instance_name = segment_ident | array_instances ;
+array_instances = array_segment_ident bit_list ;
+field_and_options = field_name field_length { field_options } ;
+instance_reference = segment_ident | array_instance ;
+array_instance = array_segment_ident left_paren index right_paren ;
+index = integer ;
+selected_segment_element = "SELECTMUX"
+    (comma).{[left_paren selectable_segment right_paren]}
+    field_selection_assignment ;
+selectable_segment = instance_and_options | instance_reference ;
+field_selection_assignment = selection_field selection_values
+    [ broadcast_field broadcast_values ] ;
+selection_field = "SELECTFIELD" left_paren field_reference right_paren ;
+field_reference = { instance_reference period } field_name ;
+selection_values = "SELECTVALUES" left_paren segment_selection
+    { segment_selection } right_paren ;
+segment_selection = left_paren instance_reference colon (comma).{[field_value]} right_paren ;
+field_value = mnemonic_identifier | binary_pattern | hex_pattern | decimal_pattern ;
+broadcast_field = "BROADCASTFIELD" left_paren field_reference right_paren ;
+broadcast_values = "BROADCASTVALUES" left_paren broadcast_selection
+    { broadcast_selection } right_paren ;
+broadcast_selection = left_paren (comma).{[instance_reference]}
+    colon (comma).{[field_value]} right_paren ;
+boundary_instance = segment_ident "is"
+    [ "PACKAGE" package_hierarchy colon ] boundary_segment_name ;
+using_statement = "USING" package_prefix ;
+package_prefix = package_hierarchy | minus_sign ;
+package_hierarchy = user_package_name { period user_package_name } ;
+
+(* B.8.22 *)
+register_constraints_description = "attribute" "REGISTER_CONSTRAINTS" "of" target "is"
+    constraints_string semicolon ;
+constraints_string = "&".{quote (comma).{[constraints_list]} quote} ;
+constraints_list = constraint_domain left_paren constraint_checks right_paren ;
+constraint_domain = reg_or_seg_name | "entity" | "package" ;
+constraint_checks = (comma).{[left_paren check_expression right_paren
+    constraint_severity information_tag]} ;
+constraint_severity = "error" | "warning" | "info" ;
+check_expression = short_expression | binary_expr ;
+short_expression = nested_expr | unary_expr | field_reference | oper_val ;
+nested_expr = left_paren check_expression right_paren ;
+unary_expr = logical_inv_expr | bit_wise_inv_expr | one_hot_expr ;
+logical_inv_expr = logical_inversion short_expression ;
+bit_wise_inv_expr = bit_wise_inversion short_expression ;
+one_hot_expr = one_hot nested_expr ;
+binary_expr = short_expression binary_operator check_expression ;
+binary_operator = exponentiation | multiplication | division | remainder |
+    addition | subtraction | right_shift | left_shift | less_than | greater_than |
+    less_than_or_equal | greater_than_or_equal | equals | not_equals |
+    bit_wise_and | bit_wise_xor | bit_wise_or | logical_and | logical_or ;
+oper_val = mnemonic_pattern | binary_pattern | hex_pattern | decimal_pattern ;
+mnemonic_pattern = [ [ "PACKAGE" package_hierarchy colon ] mnemonic_group_name ]
+    left_brace mnemonic_identifier right_brace ;
+logical_inversion = "!";
+bit_wise_inversion = "~";
+one_hot = "one_hot";
+exponentiation = "**";
+multiplication = "*";
+division = "/";
+remainder = "%";
+addition = "+";
+subtraction = "-";
+left_shift = "<<";
+right_shift = ">>";
+less_than = "<";
+greater_than = ">";
+less_than_or_equal = "<=";
+greater_than_or_equal = ">=";
+equals = "==";
+not_equals = "!=";
+bit_wise_and = "&";
+bit_wise_xor = "^";
+bit_wise_or = "|";
+logical_and = "&&";
+logical_or = "||";
+
+(* B.8.23 *)
+register_association_description = "attribute" "REGISTER_ASSOCIATION"
+    "of" target "is" register_association_string semicolon ;
+register_association_string = "&".{quote (comma).{[register_association_list]} quote} ;
+register_association_list = reg_field_or_instance colon { association_list }+ ;
+reg_field_or_instance = field_or_instance_name [ left_paren index right_paren ] ;
+field_or_instance_name = extended_field_name | segment_ident | array_segment_ident | tdr ;
+association_list = port_list | info_list | clock_list | user_list | unit ;
+port_list = "port" port_association_list ;
+port_association_list = left_paren (comma).{[port_id]} right_paren ;
+info_list = "info" left_paren (comma).{[information_tag]} right_paren ;
+clock_list = "sysclock" left_paren (comma).{[port_id]} right_paren ;
+user_list = "user" user_list_name left_paren single_or_multi_list right_paren ;
+user_list_name = vhdl_identifier ;
+single_or_multi_list = single_word_user_list | multi_word_user_list ;
+single_word_user_list = (comma).{[vhdl_identifier]} ;
+multi_word_user_list = (comma).{[information_tag]} ;
+unit = "unit" left_paren unit_name unit_definition right_paren ;
+unit_definition = left_brace unit_value [ unit_scale ] [ unit_link ] right_brace ;
+unit_name = vhdl_identifier ;
+unit_value = hex_pattern ;
+unit_scale = real ;
+unit_link = information_tag ;
+power_port_association_description = "attribute" "POWER_PORT_ASSOCIATION"
+    "of" entity_target "is" power_port_association_string semicolon ;
+power_port_association_string = "&".{quote (comma).{[power_port_association_list]} quote} ;
+power_port_association_list = power_port_id colon port_association_list ;
+power_port_id = port_id ;
+
+(* B.8.24 *)
+bsdl_extensions = @:extension_declaration | @:extension_definition ;
+extension_declaration = "attribute" extension_name:extension_name colon "BSDL_EXTENSION" semicolon ;
+extension_definition = "attribute" extension_name:extension_name "of" target
+    "is" extension_parameters:extension_parameter_string semicolon ;
+extension_name = entity_defined_name | bsdl_package_defined_name ;
+entity_defined_name = vhdl_identifier ;
+bsdl_package_defined_name = vhdl_identifier ;
+extension_parameter_string = string ;
+
+(* B.8.25 *)
+design_warning = "attribute" "DESIGN_WARNING" "of" target "is" @:string semicolon ;
+
+(* B.10 *)
+user_package = user_package_stmt user_package_body ;
+user_package_stmt = "package" user_package_name "is"
+    standard_use_statement
+    { deferred_constant }
+    { extension_declaration }
+    "end" user_package_name semicolon ;
+deferred_constant = "constant" cell_name colon "CELL_INFO" semicolon ;
+user_package_body = "package" "body" user_package_name "is"
+    standard_use_statement
+    { use_statement }
+    { cell_description_constant }
+    { register_mnemonics_description }
+    { register_fields_description }
+    { register_assembly_description }
+    { register_constraints_description }
+    { register_association_description }
+    { extension_definition }
+    [ design_warning ]
+    "end" user_package_name semicolon ;
+cell_description_constant = "constant" cell_name colon "CELL_INFO"
+    colon_equal left_paren capture_descriptor_list right_paren semicolon ;
+capture_descriptor_list = (comma).{[capture_descriptor]} ;
+capture_descriptor = left_paren cell_context comma capture_instruction comma
+    data_source right_paren ;
+cell_context = "INPUT" | "OUTPUT2" | "OUTPUT3" | "INTERNAL" | "CONTROL" |
+    "CONTROLR" | "CLOCK" | "BIDIR_IN" | "BIDIR_OUT" | "OBSERVE_ONLY" ;
+capture_instruction = "EXTEST" | "SAMPLE" | "INTEST" ;
+data_source = "PI" | "PO" | "CAP" | "UPD" | "ZERO" | "ONE" | "X" ;
+
+(* Character definitions *)
+asterisk = "*";
+colon = ":";
+colon_equal = ":=";
+comma = ",";
+left_brace = "{";
+left_bracket = "[";
+left_paren = "(";
+minus_sign = "-";
+period = ".";
+quote = '"';
+right_brace = "}";
+right_bracket = "]";
+right_paren = ")";
+semicolon = ";";
