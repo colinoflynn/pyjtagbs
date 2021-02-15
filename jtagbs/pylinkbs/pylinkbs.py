@@ -128,10 +128,10 @@ class JTAGRawBS(object):
 
         file = bsdl.BSDLFile(filepath)
         
-        fileidcode = file.get_idcode()
+        idmask, fileidcode = file.get_idcode()
         scanchainidcode = self.get_devid(device_number)
         
-        if fileidcode != scanchainidcode:
+        if (fileidcode & idmask) != (scanchainidcode & idmask):
             if force == False:
                 raise IOError("BSDL file idcode: %s, detected idcode %s"%(fileidcode, scanchainidcode))
         

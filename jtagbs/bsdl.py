@@ -108,9 +108,12 @@ class BSDLFile(object):
         rawidcode = rawidcode['idcode_register']
         
         maskbits = len(rawidcode[0])
-        baseid = int(rawidcode[1] + rawidcode[2] + rawidcode[3] + rawidcode[4], 2)
+        binstr = rawidcode[1] + rawidcode[2] + rawidcode[3] + rawidcode[4]
+        baseid = int(binstr, 2)
         
-        return baseid
+        mask = int("1"*len(binstr), 2)
+        
+        return (mask, baseid)
     
     def pretty_dump(self):
         """Return an OK format string we can print"""
