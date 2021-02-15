@@ -70,7 +70,7 @@ class BSDLFile(object):
         
         return int(self.bsdl["boundary_scan_register_description"]["fixed_boundary_stmts"]["boundary_length"])
         
-    def process_ioregs(self):
+    def process_ioregs(self, print_warnings=True):
         """Process the scan registers & build a dict we can use for input/output/oe access"""
     
         boundary_registers = self.bsdl["boundary_scan_register_description"]["fixed_boundary_stmts"]["boundary_register"]
@@ -78,7 +78,15 @@ class BSDLFile(object):
         io_regs = {}
         
         for d in boundary_registers:
-            portid = d['cell_info']['cell_spec']['port_id']
+            
+            #Sometimes files have bad parse results - there is a good chance it's an internal
+            #cell or something we don't need. So we just keep going.
+            try:
+                portid = d['cell_info']['cell_spec']['port_id']
+            except TypeError:
+                if print_warnings:
+                    print("WARNING: skipping cell '%s' due to parse error"%d)
+                continue
         
             if d['cell_info']['cell_spec']['function'] == 'INPUT':
                 if portid not in io_regs:
@@ -103,15 +111,24 @@ class BSDLFile(object):
     def get_idcode(self):
         """Extract idcode from BSDL file - returned as (mask, idcode)"""
         
-        rawidcode = self.bsdl['optional_register_description']
-        rawidcode = rawidcode[0] #TODO - cycle through extra registers, for now assume idcode one is first result
-        rawidcode = rawidcode['idcode_register']
-        
-        maskbits = len(rawidcode[0])
-        binstr = rawidcode[1] + rawidcode[2] + rawidcode[3] + rawidcode[4]
-        baseid = int(binstr, 2)
-        
-        mask = int("1"*len(binstr), 2)
+        try:
+            rawidcode = self.bsdl['optional_register_description']
+            if isinstance(rawidcode, list):
+                rawidcode = rawidcode[0] #TODO - cycle through extra registers, for now assume idcode one is first result
+            rawidcode = rawidcode['idcode_register']
+            
+            #Maskbits seems to be first?
+            maskbits = len(rawidcode[0])
+            
+            #Take rest and combine
+            binstr = "".join(rawidcode[1:])
+            baseid = int(binstr, 2)
+            
+            mask = int("1"*len(binstr), 2)
+        except:
+            print("Processing failed - debug info to help fix the code:")
+            print("  optional_register_description: %s"%self.bsdl['optional_register_description'])
+            print("  rawidcode at exception: %s"%rawidcode)
         
         return (mask, baseid)
     
