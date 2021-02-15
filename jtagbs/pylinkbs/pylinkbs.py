@@ -24,7 +24,7 @@ import os
 from jtagbs import bsdl
 
 class JTAGRawBS(object):
-    def scan_init_chain(self):
+    def scan_init_chain(self, verbose=False):
         """Init the scan chain, checking for devices"""
         # Logic is from jtagcore_scan_and_init_chain() library
         
@@ -47,7 +47,9 @@ class JTAGRawBS(object):
                 break
         
         total_IR_length -= 1
-        print("IR Length: %d"%total_IR_length)
+        
+        if verbose:
+            print("IR Length: %d"%total_IR_length)
         
         self.total_IR_length = total_IR_length
         
@@ -76,14 +78,15 @@ class JTAGRawBS(object):
         result = self.tdo_flush(0, 512)
         totaldev2 = 0
         for r in result:
-            totaldev2 += bin(r).split('b')[1].count('0')
+            totaldev2 += bin(r).split('b')[1].count('1')
             if r == 0x00:
                 break
         
         if totaldev1 != totaldev2:
-            raise IOError("Chain unstable - detection failed")
-            
-        print("Found %d devices"%totaldev1)
+            raise IOError("Chain unstable - detection failed\n  Scan1:%s\n  Scan2:%s"%(totaldev1, totaldev2))
+        
+        if verbose:
+            print("Found %d devices"%totaldev1)
         
         self.num_devices = totaldev1
         devlist = []
