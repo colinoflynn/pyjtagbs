@@ -5,7 +5,7 @@ from setuptools import setup
 setup(
     name = 'pyjtagbs',
     version = '1.0.0',
-    description = "JTAG without the BS",
+    description = "JTAG with the BS (Boundary Scan)",
     author = "Colin O'Flynn",
     author_email = 'coflynn@newae.com',
     license = 'GPLv3',
