@@ -66,7 +66,7 @@ The initial "other backend" is the PyLink interface.
 ## Other Tools Worth Mentioning
 
 * urJTAG - open source JTAG tooling, the original!
-* TopJTAG - low-cost ($100) with GUI that shows each pin on the package itself - very handy for debug.
+* REPORTED DEAD PROJECT: TopJTAG - low-cost ($100) with GUI that shows each pin on the package itself - very handy for debug. Reported as of Aug/2023 that may be non-functional project and not possible to buy.
 
 ## GUI
 
