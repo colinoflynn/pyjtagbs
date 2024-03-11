@@ -51,6 +51,12 @@ That library was developed by Viveris (credit to Jean-François DEL NERO & Séba
 
 This library supports FTDI cables along with Segger J-Link tools.
 
+### Using ChipWhisperer Husky
+
+The Python library can be imported into your Jupyter notebooks for use with a ChipWhisperer-Husky/Husky-Plus. This gives you JTAG access from the 20-pin "UserIO" front panel connectors.
+
+You can then wire some of those pins to also be used for triggering. See the ChipWhisperer jupyter notebooks for examples.
+
 ### Using J-Link
 
 The device can use a J-Link, it needs Segger's DLL as well for that. For some reason the J-Link DLL needs to be at the same location as your file that is running from (to be fixed), so to run 'example.py' you need the DLL in that folder as well (or install the DLL to your Windows system path - which may be dangerous as other tools will find that version).
@@ -66,7 +72,7 @@ The initial "other backend" is the PyLink interface.
 ## Other Tools Worth Mentioning
 
 * urJTAG - open source JTAG tooling, the original!
-* REPORTED DEAD PROJECT: TopJTAG - low-cost ($100) with GUI that shows each pin on the package itself - very handy for debug. Reported as of Aug/2023 that may be non-functional project and not possible to buy.
+* ~~TopJTAG - low-cost ($100) with GUI that shows each pin on the package itself~~ Reported as of Aug/2023 that this is a dead project, I have been unable to get in touch with owner for past year so unfortunutly cannot recommend it.
 
 ## GUI
 
