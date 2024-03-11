@@ -127,9 +127,10 @@ class JTAGCore(object):
         rv = self.lib.jtagcore_select_and_open_probe(self._jtag, probeid)
         self._check_return(rv)
 
-    def scan_init_chain(self):
+    def scan_init_chain(self, verbose=False):
         """Init the scan chain"""
-
+        if verbose:
+            raise NotImplementedError("No verbose option for this interface")        
         rv = self.lib.jtagcore_scan_and_init_chain(self._jtag)
         self._check_return(rv)
 

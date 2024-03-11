@@ -34,10 +34,10 @@ class JTAGBS(object):
 
         self.interface.open_probe(probe)
 
-    def init_scanchain(self):
+    def init_scanchain(self, verbose=False):
         """Initialize the JTAG chain"""
 
-        self.interface.scan_init_chain()
+        self.interface.scan_init_chain(verbose)
 
     def list_devids(self):
         """List detected device IDs"""
