@@ -18,6 +18,50 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
 import struct
+import math
+
+from enum import Enum
+
+class Jtagstate(Enum):
+    TEST_LOGIC_RESET = 0
+    RUN_TEST_IDLE = 1
+    SELECT_DRSCAN = 2
+    CAPTURE = 3
+    SHIFT = 4
+    EXIT1 = 5
+    PAUSE = 6
+    EXIT2 = 7
+    UPDATE = 8
+
+def split_input_to_bytes(value, bit_length=None):
+    """
+    Splits an integer into a sequence of 8-bit bytes or returns the list if the input is already a list.
+
+    Args:
+    - value (int or List[int]): The integer to split or a list of integers.
+    - bit_length (int, optional): The total length in bits of the integer. Not used if value is a list.
+
+    Returns:
+    - List[int]: A list of integers, where each integer is an 8-bit byte, or the original list.
+    """
+    # Check if the input is already a list
+    if isinstance(value, list):
+        return value
+    
+    bytes_list = []
+    # Ensure we process the correct number of bits by zero-filling on the right if necessary
+    value = value & ((1 << bit_length) - 1)
+    
+    while bit_length > 0:
+        # Extract 8 bits at a time
+        byte = value & 0xFF
+        bytes_list.append(byte)
+        # Shift right by 8 bits
+        value >>= 8
+        bit_length -= 8
+    
+    # Reverse the list to have bytes in order from most significant to least significant
+    return bytes_list
 
 class JTAGRawBS(object):
     """Raw JTAG access object using only Python, no external DLL needed!
@@ -26,6 +70,7 @@ class JTAGRawBS(object):
     """
 
     flush_len = 512
+    state = Jtagstate.TEST_LOGIC_RESET
 
     def scan_init_chain(self, verbose=False):
         """Init the scan chain, checking for devices"""
@@ -112,11 +157,174 @@ class JTAGRawBS(object):
         #Go to Idle
         self._jtag_reset()
         self.tdo_flush(0, 6) #clock out 6x 0's
+        self.state = Jtagstate.RUN_TEST_IDLE
         
         self.bsdl = [None]*self.num_devices
+
         
     def _jtag_reset(self):
         self.tms_write(0b11111, 5)
+        self.state = Jtagstate.TEST_LOGIC_RESET
+
+    def measure_DR_length(self, max=100):
+        if self.state == Jtagstate.TEST_LOGIC_RESET:
+            # Capture DR state then shiftDR state
+            self.tms_write(0b0010, 4)
+        elif self.state == Jtagstate.RUN_TEST_IDLE:
+            self.tms_write(0b001, 3)
+        elif self.state == Jtagstate.SELECT_DRSCAN:
+            self.tms_write(0b00, 2)
+        else:
+            raise IOError("Unhandled JTAG State: " + str(self.state))
+        
+        #Clear register to 0
+        bcount = math.ceil(max / 8.0)
+        default_value = self.jtag_rawrw([0]*bcount, [0]*bcount, max)
+
+        #Send a single 1 to start
+        self.jtag_rawrw([1], [0], 1)
+
+        length = -1
+        for i in range(1, max):
+            resp = self.jtag_rawrw([0], [0], 1)
+            if resp[0] == 1:
+                length = i
+                break
+        
+        self.tms_write(0b011, 3)
+        self.state = Jtagstate.RUN_TEST_IDLE
+        
+        return length, default_value
+
+
+    def read_DR(self, bits, return_to_idle=True, pause_dr=False):
+        """
+        Reads from the data register. If `return_to_idle` is false goes back to SCAN-DR state.
+
+        `pause_dr` goes through the PAUSE-DR state BEFORE shifting, which is used to exit TAP modes
+         on certain MCUs (SPC etc) and return to normal operation.
+        """
+        bcount = math.ceil(bits / 8.0)        
+
+        if pause_dr:
+            #Go to pause DR first, then shift-DR
+            if self.state == Jtagstate.TEST_LOGIC_RESET:
+                # Capture DR state then shiftDR state
+                self.tms_write(0b0101010, 7)
+            elif self.state == Jtagstate.RUN_TEST_IDLE:
+                self.tms_write(0b010101, 6)
+            elif self.state == Jtagstate.SELECT_DRSCAN:
+                self.tms_write(0b01010, 5)
+            else:
+                raise IOError("Unhandled JTAG State: " + str(self.state))
+        else:
+            if self.state == Jtagstate.TEST_LOGIC_RESET:
+                # Capture DR state then shiftDR state
+                self.tms_write(0b0010, 4)
+            elif self.state == Jtagstate.RUN_TEST_IDLE:
+                self.tms_write(0b001, 3)
+            elif self.state == Jtagstate.SELECT_DRSCAN:
+                self.tms_write(0b00, 2)
+            else:
+                raise IOError("Unhandled JTAG State: " + str(self.state))
+
+        # Read output
+        if bits > 0:
+            tms = split_input_to_bytes((1<<(bits-1)), bits)
+            output = self.jtag_rawrw([0]*bcount, tms, bits)
+        else:
+            self.tms_write(0b1, 1)
+            output = None
+
+        #Back to idle
+        if return_to_idle:
+            self.tms_write(0b01, 2)
+            self.state = Jtagstate.RUN_TEST_IDLE
+        else:
+            self.tms_write(0b11, 2)
+            self.state = Jtagstate.SELECT_DRSCAN
+        
+        return output
+    
+    def write_DR(self, data, bits, return_to_idle=True, callback_before_updatedr=None):
+        """Write to DR and return to idle, must be in idle state to start"""
+        data = split_input_to_bytes(data, bits)
+        tms = split_input_to_bytes((1<<(bits-1)), bits)
+        
+        if self.state == Jtagstate.TEST_LOGIC_RESET:
+            # Capture DR state then shiftDR state
+            self.tms_write(0b0010, 4)
+        elif self.state == Jtagstate.RUN_TEST_IDLE:
+            self.tms_write(0b001, 3)
+        elif self.state == Jtagstate.SELECT_DRSCAN:
+            self.tms_write(0b00, 2)
+        else:
+            raise IOError("Unhandled JTAG State: " + str(self.state))
+        
+        #Send the data
+        self.jtag_rawrw(data, tms, bits, write_only=True)
+
+        if callback_before_updatedr:
+            callback_before_updatedr()
+
+        #Back to idle
+        if return_to_idle:
+            self.tms_write(0b01, 2)
+            self.state = Jtagstate.RUN_TEST_IDLE
+        else:
+            self.tms_write(0b11, 2)
+            self.state = Jtagstate.SELECT_DRSCAN
+    
+    def write_IR(self, data, bits, return_to_idle=True, callback_before_updateir=None):
+        """Write to IR and return to idle, must be in idle state to start"""
+        data = split_input_to_bytes(data, bits)
+        tms = split_input_to_bytes((1<<(bits-1)), bits)
+
+        #Go to shift-IR state
+        self.tms_write(0b00110, 5)
+        
+        #Send the data, with TMS set to '1' on last bit
+        self.jtag_rawrw(data, tms, bits, write_only=True)
+
+        if callback_before_updateir:
+            callback_before_updateir()
+
+        #Back to idle
+        if return_to_idle:
+            self.tms_write(0b01, 2)
+            self.state = Jtagstate.RUN_TEST_IDLE
+        else:
+            self.tms_write(0b11, 2)
+            self.state = Jtagstate.SELECT_DRSCAN
+
+    def nexus_32bit_read_write_CR(self, register_index_wr, register_data):
+        """Write to CR and return to SELECT-DR, must start in SELECT-DR"""
+
+        if self.state == Jtagstate.RUN_TEST_IDLE:
+            self.tms_write(0b0010, 4)
+        elif self.state == Jtagstate.SELECT_DRSCAN:
+            #Go to shift-DR state
+            self.tms_write(0b00, 2)
+        else:
+            raise IOError("Must be in SELECT-DR state, not "+str(self.state))
+
+        #Send the register index
+        self.jtag_rawrw([register_index_wr], [1<<7], 8)#, write_only=True)
+        
+        #Go Update-DR->Shift DR
+        self.tms_write(0b0011, 4)
+        
+        # Data should be 32 bits
+        bits = 32
+        tms = split_input_to_bytes((1<<(bits-1)), bits)
+        data = split_input_to_bytes(register_data, bits)
+        old_value = self.jtag_rawrw(data, tms, bits)
+
+        #Back to IDLE
+        self.tms_write(0b01, 2)
+        self.state = Jtagstate.RUN_TEST_IDLE
+        
+        return old_value
 
     def get_number_devices(self):
         """Get number of devices detected in the chain"""
