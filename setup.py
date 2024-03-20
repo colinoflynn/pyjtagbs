@@ -11,7 +11,7 @@ setup(
     license = 'LGPLv2.1',
     url = 'http://www.colinoflynn.com',
     download_url='https://github.com/colinoflynn/pyjtagbs',
-    packages = [find_packages()],
+    packages = find_packages(),
     install_requires = [
     ],
 )
